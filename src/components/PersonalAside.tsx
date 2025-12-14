@@ -260,17 +260,6 @@ const PersonalAside: React.FC = () => {
             />
           </div>
 
-          <div>
-            <Input
-              id="profileImage"
-              name="profileImage"
-              placeholder="Imagen de perfil"
-              type="file"
-              accept="image/png, image/jpeg, image/jpg, image/webp"
-              onChange={DataHandleChange}
-            ></Input>
-          </div>
-
           {templatePage && templatePage === 'minimalist' && (
             <div>
               <Input id="profileImage" name="profileImage" placeholder="Imagen de perfil" type="file"  accept="image/png, image/jpeg, image/jpg, image/webp" 
