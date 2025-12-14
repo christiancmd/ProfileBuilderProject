@@ -1,122 +1,296 @@
+import React from "react";
 import { useFormContext } from "../context/FormContext";
 
-export const MinimalistCurriculum: React.FC = () => {
-    const { dataForm } = useFormContext();
-    const { fullName, title, summary } = dataForm;
+const MinimalistCurriculum: React.FC = () => {
+  const { dataForm } = useFormContext();
+  const {
+    fullName,
+    title,
+    summary,
+    profileImage,
+    phone,
+    email,
+    location,
+    primaryLanguage,
+    secundaryLanguage,
+    educations,
+    experiences,
+    skills,
+  } = dataForm;
+
+  let imagePreviewUrl = "/src/assets/defaultImg.webp";
+
+  imagePreviewUrl =
+    profileImage !== null ? URL.createObjectURL(profileImage) : imagePreviewUrl;
 
   return (
-    <div className="flex max-w-5xl mx-auto shadow-xl">
-      
-      {/* ======================= COLUMNA LATERAL (AZUL) ======================= */}
-      <aside className="bg-blue-800 text-white p-8 w-[350px] shrink-0">
-        
-        {/* Nombre y Título */}
-        <div className="mb-10">
-          <h1 className="text-5xl font-extrabold leading-none">
-            {fullName ? fullName : "JUAN PÉREZ"}
-          </h1>
-          <p className="text-sm mt-1">
-            {title ? title : "Desarrollador Full Stack"}
-            </p>
+    <div className="relative bg-gray-900 flex max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
+      <aside className="relative z-10 text-white p-8 w-[300px] shrink-0 h-full flex flex-col justify-between gap-8.5">
+        <div className="w-full">
+          <div className="size-56 overflow-hidden m-0 mx-auto bg-gray-600 rounded-full">
+            <img
+              className="w-full h-full object-cover"
+              src={imagePreviewUrl}
+              alt="image-profile"
+            />
+          </div>
         </div>
 
-        {/* Contacto */}
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3 border-b border-white pb-1">{`CONTACTO`}</h2>
-          <div className="text-sm space-y-1">
-            <p>📧 {`juan.perez@ejemplo.com`}</p>
-            <p>📞 {`+34 600 123 456`}</p>
-            <p>📍 {`Madrid, España`}</p>
-            <p>🔗 {`linkedin.com/in/juanperezdev`}</p>
+        <section>
+          <h3 className="text-xl font-bold mb-4 border-b border-white pb-1 tracking-widest">
+            CONTACTO
+          </h3>
+          <div className="text-md text-gray-10 space-y-1">
+            <p>+{phone && phone.trim() ? phone : "34 688 555 123"}</p>
+            <p>{email && email.trim() ? email : "andres.lopez@devmail.com"}</p>
+            <p>
+              {location && location.trim() ? location : "Barcelona, España"}
+            </p>
           </div>
         </section>
 
-        {/* Habilidades */}
-        <section className="mb-8">
-          <h2 className="text-lg font-bold mb-3 border-b border-white pb-1">{`HABILIDADES`}</h2>
-          <ul className="list-none p-0 m-0 text-sm space-y-1">
-            {([
-              "JavaScript", "TypeScript", "React", "Node.js", "MongoDB",
-              "PostgreSQL", "Express", "Tailwind CSS", "Git", "Docker"
-            ] as const).map((habilidad, index) => (
-              <li key={index}>▶ {habilidad}</li>
-            ))}
-          </ul>
-        </section>
+        <div className="md:col-span-1 space-y-6 pt-1">
+          <section>
+            <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-white uppercase tracking-wider">
+              Educación
+            </h3>
 
-        {/* Educación */}
-        <section>
-          <h2 className="text-lg font-bold mb-3 border-b border-white pb-1">{`EDUCACIÓN`}</h2>
-          {([
-            {
-              titulo: "Máster en Ingeniería de Software",
-              institucion: "Universidad Tecnológica de Madrid",
-              periodo: "2019 - 2020",
-            },
-            {
-              titulo: "Grado en Informática",
-              institucion: "Universidad Politécnica",
-              periodo: "2015 - 2019",
-            },
-          ] as const).map((item, index) => (
-            <div key={index} className="mb-3 leading-tight">
-              <p className="text-sm font-bold">{item.titulo}</p>
-              <p className="text-xs">{item.institucion}</p>
-              <p className="text-xs">{item.periodo}</p>
-            </div>
-          ))}
-        </section>
+            {educations && educations.length > 0 ? (
+              educations.map(({ id, degree, institution, eduFrom, eduTo }) => (
+                <div key={id} className="mb-4">
+                  <h4 className="text-md font-semibold text-gray-100">
+                    {degree ? degree : "Grado en Ingeniería Informática"}
+                  </h4>
+                  <p className="text-md text-gray-200">
+                    {institution
+                      ? institution
+                      : "Universidad de Barcelona (UB)"}
+                  </p>
+                  <p className="text-sm text-gray-100">
+                    {eduFrom ? eduFrom : "2013"} - {eduTo ? eduTo : "2017"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="mb-4">
+                <h4 className="text-md font-semibold text-gray-100">
+                  {"Grado en Ingeniería Informática"}
+                </h4>
+                <p className="text-md text-gray-100">
+                  {"Universidad de Barcelona (UB)"}
+                </p>
+                <p className="text-sm text-gray-100">
+                  {"2013"} - {"2018"}
+                </p>
+              </div>
+            )}
+          </section>
+
+          <section>
+            <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-white uppercase tracking-wider">
+              Idiomas
+            </h3>
+            <ul className="text-base text-gray-100 space-y-1">
+              <li>{primaryLanguage ? primaryLanguage : "Español: Nativo"}</li>
+              <li>
+                {secundaryLanguage
+                  ? secundaryLanguage
+                  : "Inglés: C2 - Bilingüe (Certificado TOEFL)"}
+              </li>
+            </ul>
+          </section>
+        </div>
       </aside>
 
-      {/* ======================= COLUMNA PRINCIPAL (BLANCA) ======================= */}
-      <main className="grow p-8 bg-white">
-        
-        {/* Perfil Profesional */}
-        <section className="mb-8">
-          <h2 className="text-xl font-bold mb-3 border-b-2 border-gray-300 pb-1 text-blue-800">{`PERFIL PROFESIONAL`}</h2>
-          <p className="text-base text-gray-700 leading-relaxed">
-            {summary ? summary : `Desarrollador con 5 años de experiencia en la creación y
-            mantenimiento de aplicaciones web escalables. Experiencia sólida en
-            React, Node.js y bases de datos relacionales.`}
+      <main className="grow py-8 px-10 bg-white">
+        <section className="mb-6">
+          <div className="mb-6 space-y-1">
+            <h1 className="text-4xl text-black/80 font-bold uppercase tracking-widest">
+              {fullName ? fullName : "ANDRÉS LÓPEZ"}
+            </h1>
+            <h2 className="text-xl font-light text-gray-900/80 inline-block">
+              {title && title.trim()
+                ? title
+                : "Arquitecto de Software & Desarrollador Full Stack"}
+            </h2>
+          </div>
+          <h3 className="text-xl font-bold text-gray-800/90 mb-3 border-b-2 border-gray-300 pb-1 tracking-widest uppercase">
+            Perfil Profesional
+          </h3>
+          <p className="text-[0.95em] text-gray-700 leading-relaxed">
+            {summary && summary.trim()
+              ? summary
+              : `Arquitecto de Software con más de 8 años de experiencia
+                  liderando el ciclo de vida completo de aplicaciones web
+                  escalables. Experiencia profunda en ecosistemas
+                  React/Node.js y arquitectura de Microservicios (AWS
+                  Lambda). Enfocado en la optimización del rendimiento y la
+                  implementación de prácticas de integración continua (CI/CD)
+                  para garantizar entregas de alta calidad.`}
           </p>
         </section>
 
-        {/* Experiencia */}
-        <section className="mb-8">
-          <h2 className="text-xl font-bold mb-3 border-b-2 border-gray-300 pb-1 text-blue-800">{`EXPERIENCIA`}</h2>
+        <section className="mb-10">
+          <h3 className="text-xl font-bold text-gray-800/90 mb-4 border-b-2 border-gray-300 pb-1 tracking-widest uppercase">
+            Experiencia Laboral
+          </h3>
 
-          {/* Listado de Experiencia */}
-          {([
-            {
-              titulo: "Desarrollador Principal",
-              empresa: "Tech Solutions Inc.",
-              periodo: "Ene 2022 - Presente",
-              logros: [
-                "Lideré el desarrollo de un nuevo panel de administración utilizando React y TypeScript, mejorando la velocidad de carga en un 40%.",
-                "Implementación de CI/CD con GitHub Actions."
-              ]
-            },
-            {
-              titulo: "Desarrollador Junior",
-              empresa: "Innovate Web",
-              periodo: "Mar 2020 - Dic 2021",
-              logros: [
-                "Mantenimiento y desarrollo de nuevas funcionalidades para la plataforma de e-commerce.",
-                "Contribuí a la migración de JQuery a React."
-              ]
-            },
-          ] as const).map((exp, index) => (
-            <div key={index} className="mb-6">
-              <div className="flex justify-between items-start mb-1">
-                <h3 className="font-bold text-lg text-blue-700">{exp.titulo}</h3>
-                <span className="text-gray-500 text-sm">{exp.periodo}</span>
+          {experiences && experiences.length > 0 ? (
+            experiences.map(
+              ({ id, position, company, expFrom, expTo, details }) => (
+                <div id={id.toLocaleString()} className="relative ml-1">
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-lg font-bold text-gray-700">
+                      {position ? position : "Arquitecto de Soluciones Senior"}
+                    </h4>
+                    <span className="text-sm font-semibold text-gray-500">
+                      {expFrom ? expFrom : "2024"} -{" "}
+                      {expTo ? expTo : "Presente"}
+                    </span>
+                  </div>
+                  <p className="text-md font-semibold text-gray-600 mb-1">
+                    {company ? company : "TecnoPanathon"}
+                  </p>
+                  <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
+                    <li className="w-full">
+                      {details[0]
+                        ? details[0]
+                        : `Reduje el tiempo de procesamiento en un 40%, lideré la migración de un monolito a una arquitectura de 5+
+                  Microservicios basados en AWS, reduciendo la latencia de
+                  respuesta en un 10%.`}
+                    </li>
+
+                    <li className="w-full">
+                      {details[1]
+                        ? details[1]
+                        : `Gestioné la infraestructura cloud con Terraform, mentoricé a un equipo de 6 desarrolladores Full Stack en
+                  patrones de diseño y code review.`}
+                    </li>
+
+                    <li className="w-full">
+                      {details[2]
+                        ? details[2]
+                        : `Uso de diferentes tecnologias como AWS, Python, Docker, GitHub Actions y Postman.`}
+                    </li>
+                  </ul>
+
+                  <div className="mt-4"></div>
+                </div>
+              )
+            )
+          ) : (
+            <div className="mb-6">
+              <div className="flex justify-between items-start">
+                <h4 className="text-lg font-bold text-gray-800">
+                  Arquitecto de Soluciones Senior
+                </h4>
+                <span className="text-sm font-semibold text-gray-500">
+                  2021 - Presente
+                </span>
               </div>
-              <p className="italic text-gray-600 mb-2">{exp.empresa}</p>
-              <ul className="list-disc ml-5 text-sm space-y-1">
-                {exp.logros.map((logro, i) => <li key={i}>{logro}</li>)}
+              <p className="text-md font-semibold text-gray-600 mb-1">
+                Tech Solutions S.L. | Barcelona
+              </p>
+              <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
+                <li>
+                  Reduje el tiempo de procesamiento en un 40%, lideré la
+                  migración de un monolito a una arquitectura de 5+
+                  Microservicios basados en AWS, reduciendo la latencia de
+                  respuesta en un 10%.
+                </li>
+
+                <li>
+                  Gestioné la infraestructura cloud con Terraform, mentoricé a
+                  un equipo de 6 desarrolladores Full Stack en patrones de
+                  diseño y code review.
+                </li>
+
+                <li>
+                  Uso de diferentes tecnologias como AWS, Python, Docker, GitHub
+                  Actions y Postman.
+                </li>
               </ul>
             </div>
-          ))}
+          )}
+        </section>
+
+        <section>
+          <h3 className="text-xl font-bold text-gray-800/90 border-b-2 border-gray-300 pb-1 mb-3  uppercase tracking-wider">
+            Tecnologías & Habilidades
+          </h3>
+
+          {skills && skills.length > 0 ? (
+            <div className="text-sm text-gray-700 leading-relaxed space-y-2">
+              {skills[0] && (
+                <p>
+                  <span className="font-semibold text-gray-700">
+                    {skills[0]?.skillTitle ? skills[0].skillTitle : "Frontend"}{" "}
+                    :
+                  </span>{" "}
+                  {""}
+                  {skills[0]?.skillDetail
+                    ? skills[0].skillDetail
+                    : "React, TypeScript, Redux, Next.js, Tailwind CSS"}
+                  .
+                </p>
+              )}
+
+              {skills[1] && (
+                <p>
+                  <span className="font-semibold text-gray-700">
+                    {skills[1]?.skillTitle
+                      ? skills[1].skillTitle
+                      : " Cloud y Base de Datos"}
+                    :
+                  </span>{" "}
+                  {""}
+                  {skills[1]?.skillDetail
+                    ? skills[1].skillDetail
+                    : " AWS (S3, EC2), PostgreSQL, MongoDB, Terraform"}
+                  .
+                </p>
+              )}
+
+              {skills[2] && (
+                <p>
+                  <span className="font-semibold text-gray-700">
+                    {skills[2]?.skillTitle
+                      ? skills[2].skillTitle
+                      : "Habilidades Blandas"}
+                    :
+                  </span>{" "}
+                  {""}
+                  {skills[2]?.skillDetail
+                    ? skills[2].skillDetail
+                    : `Liderazgo de equipos, Gestión de Proyectos, Comunicación
+                efectiva, Resolución de problemas`}
+                  .
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="text-gray-700/90 leading-relaxed space-y-2">
+              <p>
+                <span className="font-semibold text-gray-700">Frontend:</span>{" "}
+                React, TypeScript, Redux, Next.js, Tailwind CSS.
+              </p>
+
+              <p>
+                <span className="font-semibold text-gray-700">
+                  Cloud & Bases de Datos:
+                </span>{" "}
+                AWS (S3, EC2), PostgreSQL, MongoDB, Terraform.
+              </p>
+
+              <p>
+                <span className="font-semibold text-gray-700">
+                  Habilidades Blandas:
+                </span>{" "}
+                Liderazgo de equipos, Gestión de Proyectos, Comunicación
+                efectiva, Resolución de problemas.
+              </p>
+            </div>
+          )}
         </section>
       </main>
     </div>
