@@ -2,7 +2,7 @@ import Label from "./ui/Atoms/Label";
 import Textarea from "./ui/Atoms/Textarea";
 import Input from "./ui/Atoms/Input";
 import { useFormContext } from "../context/FormContext";
-//import { useTemplateContext } from "../context/TemplateContext";
+import { useTemplateContext } from "../context/TemplateContext";
 import { useState, useEffect } from "react";
 
 interface EducationEntry {
@@ -29,7 +29,7 @@ interface SkillsEntry {
 
 const PersonalAside: React.FC = () => {
   const { dataForm, DataHandleChange } = useFormContext();
-  //const { templatePage } = useTemplateContext();
+  const { templatePage } = useTemplateContext();
 
   const [skills, setSkills] = useState<SkillsEntry[]>([
     {
@@ -271,13 +271,13 @@ const PersonalAside: React.FC = () => {
             ></Input>
           </div>
 
-          {/* {templatePage && templatePage === 'minimalist' && (
+          {templatePage && templatePage === 'minimalist' && (
             <div>
               <Input id="profileImage" name="profileImage" placeholder="Imagen de perfil" type="file"  accept="image/png, image/jpeg, image/jpg, image/webp" 
                 onChange={DataHandleChange}
               ></Input>
             </div>
-          )} */}
+          )}
         </div>
 
         {/* ---------------Sección de Contacto ----------------*/}

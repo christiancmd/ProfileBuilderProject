@@ -1,4 +1,5 @@
 import Button from "../Atoms/Button";
+import { useTemplateContext } from "../../../context/TemplateContext";
 
 interface SectionButtonProps {
   setTemplate: (template: string) => void;
@@ -6,8 +7,11 @@ interface SectionButtonProps {
 
 export default function SectionButton({setTemplate}: SectionButtonProps) {
 
+  const { setTemplatePage } = useTemplateContext();
+
   const handleTemplateChange = (template: string) => {
     setTemplate(template);
+    setTemplatePage(template);
   }
 
   return (
