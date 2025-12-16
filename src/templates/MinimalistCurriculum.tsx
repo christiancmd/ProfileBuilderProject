@@ -220,7 +220,7 @@ const MinimalistCurriculum: React.FC = () => {
           </h3>
 
           {skills && skills.length > 0 ? (
-            <div className="text-sm text-gray-700 leading-relaxed space-y-2">
+            <div className="text-gray-700 leading-relaxed space-y-2">
               {skills[0] && (
                 <p>
                   <span className="font-semibold text-gray-700">

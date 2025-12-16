@@ -27,7 +27,9 @@ interface SkillsEntry {
   skillDetail: string;
 }
 
-const PersonalAside: React.FC = () => {
+
+
+export default function PersonalAside () {
   const { dataForm, DataHandleChange } = useFormContext();
   const { templatePage } = useTemplateContext();
 
@@ -230,6 +232,7 @@ const PersonalAside: React.FC = () => {
               placeholder="Ej: Christian Parisca"
               value={dataForm.fullName}
               onChange={DataHandleChange}
+              maxLength={26}
               required
             />
           </div>
@@ -244,6 +247,7 @@ const PersonalAside: React.FC = () => {
               required
               value={dataForm.title}
               onChange={DataHandleChange}
+              maxLength={50}
               placeholder="Ej: Desarrollador Frontend Senior"
             />
           </div>
@@ -257,12 +261,20 @@ const PersonalAside: React.FC = () => {
               value={dataForm.summary}
               onChange={DataHandleChange}
               placeholder="Breve resumen de tu experiencia, habilidades y objetivos profesionales."
+              rows={12}
+              maxLength={550}
             />
           </div>
 
-          {templatePage && templatePage === 'minimalist' && (
+          {templatePage && templatePage === "minimalist" && (
             <div>
-              <Input id="profileImage" name="profileImage" placeholder="Imagen de perfil" type="file"  accept="image/png, image/jpeg, image/jpg, image/webp" 
+              <Label htmlFor="profileImage">Imagen (Perfil)</Label>
+              <Input
+                id="profileImage"
+                name="profileImage"
+                placeholder="Imagen de perfil"
+                type="file"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
                 onChange={DataHandleChange}
               ></Input>
             </div>
@@ -286,6 +298,7 @@ const PersonalAside: React.FC = () => {
                 value={dataForm.phone}
                 onChange={DataHandleChange}
                 placeholder="+XX XXX XXX XX XX"
+                maxLength={26}
                 required
               />
             </div>
@@ -300,6 +313,7 @@ const PersonalAside: React.FC = () => {
                 value={dataForm.email}
                 onChange={DataHandleChange}
                 placeholder="christian@gmail.com"
+                maxLength={33}
                 required
               />
             </div>
@@ -314,6 +328,7 @@ const PersonalAside: React.FC = () => {
                 value={dataForm.location}
                 onChange={DataHandleChange}
                 placeholder="Ej: Madrid, España"
+                maxLength={29}
                 required
               />
             </div>
@@ -354,6 +369,7 @@ const PersonalAside: React.FC = () => {
                       placeholder="Ej: Ingeniería en Sistemas"
                       required
                       value={edu.degree}
+                      maxLength={63}
                       onChange={(e) => {
                         handleInputChange(edu.id, "degree", e.target.value);
                         //DataHandleChange(e);
@@ -658,6 +674,7 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(0, "skillTitle", e.target.value)
                     }
+                    maxLength={25}
                     placeholder="Título (Ej: Frontend)"
                   />
                 </div>
@@ -672,6 +689,7 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(0, "skillDetail", e.target.value)
                     }
+                    maxLength={120}
                     placeholder="Tecnologías (Ej: React, Vue, JS)"
                   />
                 </div>
@@ -690,7 +708,8 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(1, "skillTitle", e.target.value)
                     }
-                    placeholder="Título (Ej: Backend)"
+                    maxLength={25}
+                    placeholder="Título (Ej: Cloud - Base de datos)"
                   />
                 </div>
 
@@ -704,7 +723,8 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(1, "skillDetail", e.target.value)
                     }
-                    placeholder="Tecnologías (Ej: Node.js, Python, SQL)"
+                    maxLength={120}
+                    placeholder="Tecnologías (Ej: AWS (S3, EC2), PostgreSQL, MongoDB, Terraform)"
                   />
                 </div>
               </div>
@@ -722,7 +742,8 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(2, "skillTitle", e.target.value)
                     }
-                    placeholder="Título (Ej: Herramientas)"
+                    maxLength={25}
+                    placeholder="Título (Ej: Habilidades blandas)"
                   />
                 </div>
 
@@ -736,7 +757,8 @@ const PersonalAside: React.FC = () => {
                     onChange={(e) =>
                       updateSkill(2, "skillDetail", e.target.value)
                     }
-                    placeholder="Tecnologías (Ej: Git, Docker, AWS)"
+                    maxLength={120}
+                    placeholder="Tecnologías (Ej: Gestión de Proyectos, Comunicación)"
                   />
                 </div>
               </div>
@@ -748,4 +770,4 @@ const PersonalAside: React.FC = () => {
   );
 };
 
-export default PersonalAside;
+
