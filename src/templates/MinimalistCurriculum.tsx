@@ -18,14 +18,14 @@ const MinimalistCurriculum: React.FC = () => {
     skills,
   } = dataForm;
 
-  let imagePreviewUrl = "/src/assets/defaultImg.webp";
+  let imagePreviewUrl = "/src/assets/image/defaultImg.webp";
 
   imagePreviewUrl =
     profileImage !== null ? URL.createObjectURL(profileImage) : imagePreviewUrl;
 
   return (
     <div className="relative bg-gray-900 flex max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
-      <aside className="relative z-10 text-white p-8 w-[300px] shrink-0 h-full flex flex-col justify-between gap-8.5">
+      <aside className="relative text-white p-8 w-[75] min-w-[18rem] max-w-[18em] shrink-0 h-full flex flex-col justify-between gap-8.5 overflow-hidden">
         <div className="w-full">
           <div className="size-56 overflow-hidden m-0 mx-auto bg-gray-600 rounded-full">
             <img
@@ -50,7 +50,7 @@ const MinimalistCurriculum: React.FC = () => {
         </section>
 
         <div className="md:col-span-1 space-y-6 pt-1">
-          <section>
+          <section className="overflow-hidden flex flex-col flex-wrap">
             <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-white uppercase tracking-wider">
               Educación
             </h3>
