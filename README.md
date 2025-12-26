@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# ProfileBuilder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Crea, previsualiza y exporta tu curriculum vitae (CV) desde una interfaz moderna.
 
-Currently, two official plugins are available:
+[![Vite](https://img.shields.io/badge/Vite-%5E7.2.2-brightgreen)](https://vitejs.dev/) [![React](https://img.shields.io/badge/React-%5E18.2.0-61dafb)](https://reactjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-~5.9.3-blue)](https://www.typescriptlang.org/) [![react-pdf](https://img.shields.io/badge/react--pdf-%5E4.3.1-red)](https://react-pdf.org/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+Descripción
+-----------
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+ProfileBuilder es una solución eficiente diseñada para transformar la creación de CVs en una experiencia ágil e intuitiva. Desarrollada con el ecosistema moderno de React + TypeScript, la aplicación garantiza una gestión de estado robusta y una interfaz tipada que elimina errores en tiempo real. Gracias a Vite, la experiencia de desarrollo y carga es instantánea, permitiendo a los usuarios alternar entre plantillas disponibles y exportar documentos PDF con fidelidad de impresión en segundos. 
 
-## Expanding the ESLint configuration
+Hace algunas semanas tuve la necesidad de actualizar mi currículum para postularme a varias ofertas de trabajo. Aunque actualmente el mercado ofrece varias aplicaciones que proporcionan plantillas y diseños para la elaboración de un currículum vitae, decidí hacer algo diferente y opté por crear una solución propia: ¡crear mi propia app para la generación de currículums en minutos!
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Principales objetivos
+- Permitir edición guiada de los campos de un CV.
+- Generar una versión visual (HTML) y una versión PDF que refleje fielmente la previsualización.
+- Mantener los datos en un estado central (`FormContext`) para facilitar la reutilización entre vistas.
+- Mejorar Mis habilides como desarrollador y futuro Ingeniero en Sistemas.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Proyecto — ¿qué incluye?
+- Formulario dinámico con múltiples entradas (experiencia, educación, skills).
+- Previsualización en dos plantillas (`Minimalist` y `Modern`).
+- Generación de PDF con `@react-pdf/renderer`.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Tecnologías y versiones
+-----------------------
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Área | Paquete | Versión |
+|---|---:|:---:|
+| Bundler / Dev server | `vite` | ^7.2.2 |
+| Frontend | `react`, `react-dom` | ^18.2.0 |
+| Tipado | `typescript` | ~5.9.3 |
+| PDF | `@react-pdf/renderer` | ^4.3.1 |
+| Styling | `tailwindcss` | ^4.1.17 |
+
+> Nota: la lista completa y versiones están en `package.json`.
+
+Instalación rápida
+------------------
+
+Requisitos:
+- Node.js v16+ (recomendado)
+- `pnpm` (recomendado) o `npm`
+
+Pasos:
+
+```bash
+# clonar
+git clone <repo-url>
+cd ProfileBuilder
+
+# instalar dependencias
+pnpm install
+
+# arrancar en modo desarrollo
+pnpm dev
+
+# construir para producción
+pnpm build
+pnpm preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+La app quedará disponible en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Estructura relevante
+---------------------
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `src/context/FormContext.tsx` — estado global del formulario (`dataForm`) y handler `DataHandleChange`.
+- `src/components/PersonalAside.tsx` — formulario lateral (inputs: nombre, contacto, educación, experiencia, skills, imagen de perfil).
+- `src/templates/` — vistas HTML de previsualización (Minimalist / Modern).
+- `src/components/pdf/` — generadores y estilos para PDF (`GenerateDocument.tsx`, `DocStyles.ts`).
+
+Buenas prácticas & recomendaciones
+---------------------------------
+
+- Revocar `URL.createObjectURL` cuando se genere un preview de imagen para evitar fugas de memoria.
+- Evitar sincronizaciones redundantes entre estado local y `FormContext` (comprobar igualdad antes de `setDataForm`) para reducir re-renders.
+- Generar el PDF bajo demanda (p. ej. con `pdf(...).toBlob()` al pulsar "Descargar") en lugar de renderizar el `Document` continuamente.
+
+Contribuir
+----------
+
+1. Crea una rama: `git checkout -b feature/mi-cambio`
+2. Haz tus cambios y test localmente
+3. Envía un PR hacia `main`
+
+
+Contacto
+----------
+
+-Email: pariscachristian@gmail.com
