@@ -62,7 +62,7 @@ export const ModernCurriculum: React.FC = () => {
             {experiences && experiences.length > 0 ? (
               experiences.map(
                 ({ id, position, company, expFrom, expTo, details }) => (
-                  <div id={id.toLocaleString()} className="mb-6">
+                  <div key={id.toLocaleString()} className="mb-6">
                     <div className="flex justify-between items-start">
                       <h4 className="text-lg font-bold text-gray-700">
                         {position
@@ -192,6 +192,8 @@ export const ModernCurriculum: React.FC = () => {
           </section>
         </div>
       </div>
+
+      {/* 4. TECNOLOGIAS Y HABILIDADES   */}
 
       <div className="space-y-8 pt-2 ">
         <section>

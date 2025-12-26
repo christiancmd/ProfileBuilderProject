@@ -1,7 +1,12 @@
 import React from "react";
 import { useFormContext } from "../context/FormContext";
+import { useState, useEffect } from "react";
 
 const MinimalistCurriculum: React.FC = () => {
+  const [previewUrl, setPreviewUrl] = useState<string>(
+    "/src/assets/image/defaultImg.webp"
+  );
+
   const { dataForm } = useFormContext();
   const {
     fullName,
@@ -18,10 +23,17 @@ const MinimalistCurriculum: React.FC = () => {
     skills,
   } = dataForm;
 
-  let imagePreviewUrl = "/src/assets/image/defaultImg.webp";
-
-  imagePreviewUrl =
-    profileImage !== null ? URL.createObjectURL(profileImage) : imagePreviewUrl;
+  useEffect(() => {
+    if (!profileImage) {
+      setPreviewUrl("/src/assets/image/defaultImg.webp");
+      return;
+    }
+    const url = URL.createObjectURL(profileImage);
+    setPreviewUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [profileImage]);
 
   return (
     <div className="relative bg-gray-900 flex max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
@@ -30,7 +42,7 @@ const MinimalistCurriculum: React.FC = () => {
           <div className="size-56 overflow-hidden m-0 mx-auto bg-gray-600 rounded-full">
             <img
               className="w-full h-full object-cover"
-              src={imagePreviewUrl}
+              src={previewUrl}
               alt="image-profile"
             />
           </div>
@@ -215,58 +227,19 @@ const MinimalistCurriculum: React.FC = () => {
         </section>
 
         <section>
-          <h3 className="text-xl font-bold text-gray-800/90 border-b-2 border-gray-300 pb-1 mb-3  uppercase tracking-wider">
+          <h3 className="text-xl font-bold text-gray-800/90 border-b-2 border-gray-300 pb-1 mb-3 uppercase tracking-wider">
             Tecnologías & Habilidades
           </h3>
-
           {skills && skills.length > 0 ? (
             <div className="text-gray-700 leading-relaxed space-y-2">
-              {skills[0] && (
-                <p>
+              {skills.map((skill, index) => (
+                <p key={index}>
                   <span className="font-semibold text-gray-700">
-                    {skills[0]?.skillTitle ? skills[0].skillTitle : "Frontend"}{" "}
-                    :
-                  </span>{" "}
-                  {""}
-                  {skills[0]?.skillDetail
-                    ? skills[0].skillDetail
-                    : "React, TypeScript, Redux, Next.js, Tailwind CSS"}
-                  .
+                    {skill.skillTitle ?? "Sin título"}:{" "}
+                  </span>
+                  {skill.skillDetail ?? "Sin detalle"}.{" "}
                 </p>
-              )}
-
-              {skills[1] && (
-                <p>
-                  <span className="font-semibold text-gray-700">
-                    {skills[1]?.skillTitle
-                      ? skills[1].skillTitle
-                      : " Cloud y Base de Datos"}
-                    :
-                  </span>{" "}
-                  {""}
-                  {skills[1]?.skillDetail
-                    ? skills[1].skillDetail
-                    : " AWS (S3, EC2), PostgreSQL, MongoDB, Terraform"}
-                  .
-                </p>
-              )}
-
-              {skills[2] && (
-                <p>
-                  <span className="font-semibold text-gray-700">
-                    {skills[2]?.skillTitle
-                      ? skills[2].skillTitle
-                      : "Habilidades Blandas"}
-                    :
-                  </span>{" "}
-                  {""}
-                  {skills[2]?.skillDetail
-                    ? skills[2].skillDetail
-                    : `Liderazgo de equipos, Gestión de Proyectos, Comunicación
-                efectiva, Resolución de problemas`}
-                  .
-                </p>
-              )}
+              ))}
             </div>
           ) : (
             <div className="text-gray-700/90 leading-relaxed space-y-2">
@@ -274,14 +247,12 @@ const MinimalistCurriculum: React.FC = () => {
                 <span className="font-semibold text-gray-700">Frontend:</span>{" "}
                 React, TypeScript, Redux, Next.js, Tailwind CSS.
               </p>
-
               <p>
                 <span className="font-semibold text-gray-700">
                   Cloud & Bases de Datos:
                 </span>{" "}
                 AWS (S3, EC2), PostgreSQL, MongoDB, Terraform.
               </p>
-
               <p>
                 <span className="font-semibold text-gray-700">
                   Habilidades Blandas:

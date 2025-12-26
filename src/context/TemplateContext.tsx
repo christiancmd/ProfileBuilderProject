@@ -19,7 +19,7 @@ export const TemplateProvider = ({children}:TemplateContextProps) => {
     );
 }
 
-export const useTemplateContext = () => {3
+export const useTemplateContext = () => {
   const context = useContext(TemplateContext);
   if (context === undefined) {
     throw new Error("useTemplateContext debe usarse dentro de un FormProvider");

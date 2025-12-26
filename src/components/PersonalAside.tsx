@@ -27,8 +27,6 @@ interface SkillsEntry {
   skillDetail: string;
 }
 
-
-
 export default function PersonalAside () {
   const { dataForm, DataHandleChange } = useFormContext();
   const { templatePage } = useTemplateContext();
@@ -247,7 +245,7 @@ export default function PersonalAside () {
               required
               value={dataForm.title}
               onChange={DataHandleChange}
-              maxLength={50}
+              maxLength={60}
               placeholder="Ej: Desarrollador Frontend Senior"
             />
           </div>
@@ -261,7 +259,7 @@ export default function PersonalAside () {
               value={dataForm.summary}
               onChange={DataHandleChange}
               placeholder="Breve resumen de tu experiencia, habilidades y objetivos profesionales."
-              rows={12}
+              rows={6}
               maxLength={550}
             />
           </div>
@@ -300,6 +298,7 @@ export default function PersonalAside () {
                 placeholder="+XX XXX XXX XX XX"
                 maxLength={26}
                 required
+                autoComplete="tel"
               />
             </div>
 
@@ -315,6 +314,7 @@ export default function PersonalAside () {
                 placeholder="christian@gmail.com"
                 maxLength={33}
                 required
+                autoComplete="email"
               />
             </div>
 
@@ -454,7 +454,7 @@ export default function PersonalAside () {
           </div>
         </div>
 
-        {/* --------------Sección de Educación ------------------*/}
+        {/* --------------Sección de Idiomas ------------------*/}
 
         <div className="pt-4 border-t">
           <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
@@ -463,7 +463,7 @@ export default function PersonalAside () {
 
           <div className="flex flex-col gap-5">
             <div>
-              <Label htmlFor="language1">Idioma Principal</Label>
+              <Label htmlFor="primaryLanguage">Idioma Principal</Label>
               <Input
                 id="primaryLanguage"
                 name="primaryLanguage"
@@ -476,7 +476,7 @@ export default function PersonalAside () {
             </div>
 
             <div>
-              <Label htmlFor="language2">Idioma Secundario</Label>
+              <Label htmlFor="secundaryLanguage">Idioma Secundario</Label>
 
               <Input
                 id="secundaryLanguage"
@@ -513,9 +513,9 @@ export default function PersonalAside () {
                 )}
 
                 <div>
-                  <Label htmlFor={`position`}>Cargo / Puesto</Label>
+                  <Label htmlFor="position">Cargo / Puesto</Label>
                   <Input
-                    id={`position`}
+                    id="position"
                     name="position"
                     type="text"
                     value={exp.position}
@@ -527,9 +527,9 @@ export default function PersonalAside () {
                 </div>
 
                 <div>
-                  <Label htmlFor={`company`}>Empresa</Label>
+                  <Label htmlFor="company">Empresa</Label>
                   <Input
-                    id={`company`}
+                    id="company"
                     name="company"
                     type="text"
                     value={exp.company}
@@ -537,6 +537,7 @@ export default function PersonalAside () {
                       expHandleInputChange(exp.id, "company", e.target.value);
                     }}
                     placeholder="Ej: Empana-Tech"
+                    autoComplete="organization"
                   />
                 </div>
 
@@ -582,47 +583,50 @@ export default function PersonalAside () {
                       <Label htmlFor={`achievement-${exp.id}`}>
                         Logro Clave
                       </Label>
-                      <Input
+                      <Textarea
                         id={`achievement-${exp.id}`}
                         name={`achievement-${exp.id}`}
                         value={exp.details?.[0] ?? ""}
-                        type="text"
                         onChange={(e) => {
                           updateExperienceDetail(exp.id, 0, e.target.value);
                         }}
                         placeholder="Ej: Reduje el tiempo de procesamiento en un 40%"
+                        rows={3}
+                        maxLength={240}
                       />
                     </div>
 
                     {/* Tarea o Proyecto Principal */}
                     <div>
-                      <Label htmlFor={`responsibility1`}>
+                      <Label htmlFor={`responsibility-${exp.id}`}>
                         Tarea/Proyecto Principal
                       </Label>
-                      <Input
+                      <Textarea
                         id={`responsibility-${exp.id}`}
                         name={`responsibility-${exp.id}`}
                         value={exp.details?.[1] ?? ""}
-                        type="text"
                         onChange={(e) => {
                           updateExperienceDetail(exp.id, 1, e.target.value);
                         }}
                         placeholder="Ej: Gestioné la infraestructura cloud con Terraform"
+                        rows={3}
+                        maxLength={240}
                       />
                     </div>
 
                     {/* Habilidades/Tecnologías Clave */}
                     <div>
-                      <Label htmlFor={`techSkills`}>Tecnologías/Skills</Label>
-                      <Input
+                      <Label htmlFor={`techSkills-${exp.id}`}>Tecnologías/Skills</Label>
+                      <Textarea
                         id={`techSkills-${exp.id}`}
                         name={`techSkills-${exp.id}`}
                         value={exp.details?.[2] ?? ""}
-                        type="text"
                         onChange={(e) => {
                           updateExperienceDetail(exp.id, 2, e.target.value);
                         }}
                         placeholder="Ej: AWS, Python, Docker, GitHub Actions"
+                        rows={2}
+                        maxLength={200}
                       />
                     </div>
                   </div>
@@ -689,7 +693,7 @@ export default function PersonalAside () {
                     onChange={(e) =>
                       updateSkill(0, "skillDetail", e.target.value)
                     }
-                    maxLength={120}
+                    maxLength={135}
                     placeholder="Tecnologías (Ej: React, Vue, JS)"
                   />
                 </div>
@@ -723,7 +727,7 @@ export default function PersonalAside () {
                     onChange={(e) =>
                       updateSkill(1, "skillDetail", e.target.value)
                     }
-                    maxLength={120}
+                    maxLength={135}
                     placeholder="Tecnologías (Ej: AWS (S3, EC2), PostgreSQL, MongoDB, Terraform)"
                   />
                 </div>
@@ -757,7 +761,7 @@ export default function PersonalAside () {
                     onChange={(e) =>
                       updateSkill(2, "skillDetail", e.target.value)
                     }
-                    maxLength={120}
+                    maxLength={135}
                     placeholder="Tecnologías (Ej: Gestión de Proyectos, Comunicación)"
                   />
                 </div>
