@@ -276,8 +276,15 @@ export const ModernStyles = StyleSheet.create({
     color: "#3a414b",
     lineHeight: 1.3,
     textAlign: 'justify'
-
   },
+  expListText: {
+    flex: 1,
+    fontSize: 11,
+    color: "#3a414b",
+    lineHeight: 1.4,
+    textAlign: 'justify'
+  },
+
   skillsContainer: {
     marginTop: 2,
   },

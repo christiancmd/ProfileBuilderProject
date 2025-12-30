@@ -1,5 +1,10 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import type { ChangeEvent } from "react";
+
+interface HandleCheckboxEvent {
+  checked: boolean;
+  setChecked?: (name: string, value: boolean) => void;
+}
 
 interface EducationEntry {
   id: number;
@@ -33,6 +38,12 @@ interface FormData {
   location: string;
   primaryLanguage: string;
   secundaryLanguage: string;
+  // Campos para la variante "sin experiencia laboral" (experiencias personales)
+  personalRol?: string;
+  personalTitle?: string;
+  personalFrom?: string;
+  personalTo?: string;
+  personalInfo?: string;
   educations: EducationEntry[];
   experiences: ExperienceEntry[];
   skills?: SkillsEntry[];
@@ -42,6 +53,8 @@ type ArrayTarget = "educations" | "experiences" | "skills" ;
 
 interface FormContextType {
   dataForm: FormData;
+  checked: HandleCheckboxEvent;
+  setChecked: (checked: HandleCheckboxEvent) => void;
   DataHandleChange: (
     e:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,10 +80,22 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     location: "",
     primaryLanguage: "",
     secundaryLanguage: "",
+    personalRol: "",
+    personalTitle: "",
+    personalFrom: "",
+    personalTo: "",
+    personalInfo: "",
     educations: [],
     experiences: [],
     skills: [],
   });
+
+  useEffect(() => {
+    console.log("Data Form updated:", dataForm);
+  }, [dataForm])
+  
+
+  const [checked, setChecked] = useState<HandleCheckboxEvent>({ checked: true });
 
   const DataHandleChange = useCallback(
     (
@@ -138,6 +163,8 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   const contextValue = {
     dataForm,
     DataHandleChange,
+    checked,
+    setChecked,
   };
 
   return (

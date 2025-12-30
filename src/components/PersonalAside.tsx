@@ -27,9 +27,10 @@ interface SkillsEntry {
   skillDetail: string;
 }
 
-export default function PersonalAside () {
-  const { dataForm, DataHandleChange } = useFormContext();
+export default function PersonalAside() {
+  const { dataForm, DataHandleChange, setChecked } = useFormContext();
   const { templatePage } = useTemplateContext();
+  const [showModalExperience, setShowModalExperience] = useState(true);
 
   const [skills, setSkills] = useState<SkillsEntry[]>([
     {
@@ -209,6 +210,17 @@ export default function PersonalAside () {
     }
   };
 
+  const handleExperienceChange = () => {
+  const nextValue = !showModalExperience;
+  setShowModalExperience(nextValue);
+
+  try {
+    setChecked({ checked: nextValue });
+  } catch (error) {
+    console.error("Error al actualizar context:", error);
+  }
+};
+
   return (
     <aside className="border rounded-lg p-4 md:col-span-1 order-1 md:order-0 bg-white shadow-lg">
       <h2 className="text-2xl text-gray-700 font-bold text-center border-b pb-4 mb-6 ">
@@ -272,7 +284,8 @@ export default function PersonalAside () {
                 name="profileImage"
                 placeholder="Imagen de perfil"
                 type="file"
-                accept="image/png, image/jpeg, image/jpg, image/webp"
+                // accept both MIME types and common extensions to maximize support
+                accept="image/png,image/jpeg,image/jpg,image/webp,.png,.jpg,.jpeg,.webp"
                 onChange={DataHandleChange}
               ></Input>
             </div>
@@ -493,169 +506,270 @@ export default function PersonalAside () {
 
         {/* --------------Sección de Experiencia ------------------*/}
 
-        <div className="pt-4 border-t">
-          <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
-            Experiencia
-          </h3>
+        <div className="relative pt-4 border-t">
+          <div className="w-full flex justify-center items-center mb-4">
+            <h3 className="text-xl font-bold text-center text-teal-800">
+              {showModalExperience
+                ? "Experiencia Laboral"
+                : "Experiencias Personales"}
+            </h3>
 
-          <div className="flex flex-col gap-4  ">
-            {experiences.map((exp, index) => (
-              <div
-                key={exp.id}
-                className={`border border-gray-500 rounded-b-2xl  p-4 ${
-                  index > 0 ? "mt-4" : ""
-                } `}
-              >
-                {experiences.length > 1 && (
-                  <h4 className="font-semibold mb-3 text-teal-700">
-                    Experiencia #{index + 1}
-                  </h4>
-                )}
-
-                <div>
-                  <Label htmlFor="position">Cargo / Puesto</Label>
-                  <Input
-                    id="position"
-                    name="position"
-                    type="text"
-                    value={exp.position}
-                    onChange={(e) => {
-                      expHandleInputChange(exp.id, "position", e.target.value);
-                    }}
-                    placeholder="Ej: Ingeniero en Sistemas"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="company">Empresa</Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    type="text"
-                    value={exp.company}
-                    onChange={(e) => {
-                      expHandleInputChange(exp.id, "company", e.target.value);
-                    }}
-                    placeholder="Ej: Empana-Tech"
-                    autoComplete="organization"
-                  />
-                </div>
-
-                {/* Fechas */}
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <Label htmlFor={`expFrom`}>Desde</Label>
-                    <Input
-                      id="expFrom"
-                      name="expFrom"
-                      type="text"
-                      value={exp.expFrom}
-                      onChange={(e) => {
-                        expHandleInputChange(exp.id, "expFrom", e.target.value);
-                      }}
-                      placeholder="MM/AAAA"
-                    />
-                  </div>
-
-                  <div className="flex-1">
-                    <Label htmlFor={"expTo"}>Hasta</Label>
-                    <Input
-                      id="expTo"
-                      name="expTo"
-                      type="text"
-                      value={exp.expTo}
-                      onChange={(e) => {
-                        expHandleInputChange(exp.id, "expTo", e.target.value);
-                      }}
-                      placeholder="MM/AAAA o presente"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-2 ">
-                  <h4 className="text-md text-center font-semibold text-teal-900 my-4">
-                    Logros y Responsabilidades
-                  </h4>
-
-                  <div className="flex flex-col gap-5">
-                    {/* Logro Clave (Énfasis en resultados) */}
-                    <div>
-                      <Label htmlFor={`achievement-${exp.id}`}>
-                        Logro Clave
-                      </Label>
-                      <Textarea
-                        id={`achievement-${exp.id}`}
-                        name={`achievement-${exp.id}`}
-                        value={exp.details?.[0] ?? ""}
-                        onChange={(e) => {
-                          updateExperienceDetail(exp.id, 0, e.target.value);
-                        }}
-                        placeholder="Ej: Reduje el tiempo de procesamiento en un 40%"
-                        rows={3}
-                        maxLength={240}
-                      />
-                    </div>
-
-                    {/* Tarea o Proyecto Principal */}
-                    <div>
-                      <Label htmlFor={`responsibility-${exp.id}`}>
-                        Tarea/Proyecto Principal
-                      </Label>
-                      <Textarea
-                        id={`responsibility-${exp.id}`}
-                        name={`responsibility-${exp.id}`}
-                        value={exp.details?.[1] ?? ""}
-                        onChange={(e) => {
-                          updateExperienceDetail(exp.id, 1, e.target.value);
-                        }}
-                        placeholder="Ej: Gestioné la infraestructura cloud con Terraform"
-                        rows={3}
-                        maxLength={240}
-                      />
-                    </div>
-
-                    {/* Habilidades/Tecnologías Clave */}
-                    <div>
-                      <Label htmlFor={`techSkills-${exp.id}`}>Tecnologías/Skills</Label>
-                      <Textarea
-                        id={`techSkills-${exp.id}`}
-                        name={`techSkills-${exp.id}`}
-                        value={exp.details?.[2] ?? ""}
-                        onChange={(e) => {
-                          updateExperienceDetail(exp.id, 2, e.target.value);
-                        }}
-                        placeholder="Ej: AWS, Python, Docker, GitHub Actions"
-                        rows={2}
-                        maxLength={200}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Botón para quitar (solo si hay más de 1) */}
-                {experiences.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeExperience(exp.id)}
-                    className="mt-4 p-2 w-full bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
-                  >
-                    Quitar Experiencia
-                  </button>
-                )}
-              </div>
-            ))}
-
-            {/* Botón para añadir (solo si hay menos de 2) */}
-            {experiences.length < 2 && (
-              <button
-                type="button"
-                onClick={addExperience}
-                className="p-2 mt-4 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
-              >
-                Agregar Otra Experiencia
-              </button>
-            )}
+            <input
+              className="absolute right-0 h-4 w-4 mr-2.5"
+              type="checkbox"
+              name="hasExperience"
+              id="hasExperience"
+              onChange={handleExperienceChange}
+            />
           </div>
+          {showModalExperience == true ? (
+            <div className="flex flex-col gap-4  ">
+              {experiences.map((exp, index) => (
+                <div
+                  key={exp.id}
+                  className={`border border-gray-500 rounded-b-2xl  p-4 ${
+                    index > 0 ? "mt-4" : ""
+                  } `}
+                >
+                  {experiences.length > 1 && (
+                    <h4 className="font-semibold mb-3 text-teal-700">
+                      Experiencia #{index + 1}
+                    </h4>
+                  )}
+
+                  <div>
+                    <Label htmlFor="position">Cargo / Puesto</Label>
+                    <Input
+                      id="position"
+                      name="position"
+                      type="text"
+                      value={exp.position}
+                      onChange={(e) => {
+                        expHandleInputChange(
+                          exp.id,
+                          "position",
+                          e.target.value
+                        );
+                      }}
+                      placeholder="Ej: Ingeniero en Sistemas"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="company">Empresa</Label>
+                    <Input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={exp.company}
+                      onChange={(e) => {
+                        expHandleInputChange(exp.id, "company", e.target.value);
+                      }}
+                      placeholder="Ej: Empana-Tech"
+                      autoComplete="organization"
+                    />
+                  </div>
+
+                  {/* Fechas */}
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <Label htmlFor={`expFrom`}>Desde</Label>
+                      <Input
+                        id="expFrom"
+                        name="expFrom"
+                        type="text"
+                        value={exp.expFrom}
+                        onChange={(e) => {
+                          expHandleInputChange(
+                            exp.id,
+                            "expFrom",
+                            e.target.value
+                          );
+                        }}
+                        placeholder="MM/AAAA"
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <Label htmlFor={"expTo"}>Hasta</Label>
+                      <Input
+                        id="expTo"
+                        name="expTo"
+                        type="text"
+                        value={exp.expTo}
+                        onChange={(e) => {
+                          expHandleInputChange(exp.id, "expTo", e.target.value);
+                        }}
+                        placeholder="MM/AAAA o presente"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-2 ">
+                    <h4 className="text-md text-center font-semibold text-teal-900 my-4">
+                      Logros y Responsabilidades
+                    </h4>
+
+                    <div className="flex flex-col gap-5">
+                      {/* Logro Clave (Énfasis en resultados) */}
+                      <div>
+                        <Label htmlFor={`achievement-${exp.id}`}>
+                          Logro Clave
+                        </Label>
+                        <Textarea
+                          id={`achievement-${exp.id}`}
+                          name={`achievement-${exp.id}`}
+                          value={exp.details?.[0] ?? ""}
+                          onChange={(e) => {
+                            updateExperienceDetail(exp.id, 0, e.target.value);
+                          }}
+                          placeholder="Ej: Reduje el tiempo de procesamiento en un 40%"
+                          rows={3}
+                          maxLength={240}
+                        />
+                      </div>
+
+                      {/* Tarea o Proyecto Principal */}
+                      <div>
+                        <Label htmlFor={`responsibility-${exp.id}`}>
+                          Tarea/Proyecto Principal
+                        </Label>
+                        <Textarea
+                          id={`responsibility-${exp.id}`}
+                          name={`responsibility-${exp.id}`}
+                          value={exp.details?.[1] ?? ""}
+                          onChange={(e) => {
+                            updateExperienceDetail(exp.id, 1, e.target.value);
+                          }}
+                          placeholder="Ej: Gestioné la infraestructura cloud con Terraform"
+                          rows={3}
+                          maxLength={300}
+                        />
+                      </div>
+
+                      {/* Habilidades/Tecnologías Clave */}
+                      <div>
+                        <Label htmlFor={`techSkills-${exp.id}`}>
+                          Tecnologías/Skills
+                        </Label>
+                        <Textarea
+                          id={`techSkills-${exp.id}`}
+                          name={`techSkills-${exp.id}`}
+                          value={exp.details?.[2] ?? ""}
+                          onChange={(e) => {
+                            updateExperienceDetail(exp.id, 2, e.target.value);
+                          }}
+                          placeholder="Ej: AWS, Python, Docker, GitHub Actions"
+                          rows={2}
+                          maxLength={200}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Botón para quitar (solo si hay más de 1) */}
+                  {experiences.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeExperience(exp.id)}
+                      className="mt-4 p-2 w-full bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                    >
+                      Quitar Experiencia
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              {/* Botón para añadir (solo si hay menos de 2) */}
+              {experiences.length < 2 && (
+                <button
+                  type="button"
+                  onClick={addExperience}
+                  className="p-2 mt-4 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+                >
+                  Agregar Otra Experiencia
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center flex-col p-4">
+              <p className="text-gray-600 italic text-center">
+                Has indicado que no tienes experiencia laboral.
+              </p>
+
+              <div className="w-full mt-8 border border-gray-400 rounded-xl p-5 shadow-lg bg-white/50 backdrop-blur-sm transition duration-300 hover:border-teal-500 hover:shadow-teal-200">
+                <div className="space-y-4">
+                 
+                  <div>
+                    <Label htmlFor="personalTitle">Actividad</Label>
+                    <Input
+                      id="personalTitle"
+                      name="personalTitle"
+                      placeholder="Ej: Emprendimientos, Proyectos Personales, Voluntariados..."
+                      type="text"
+                      value={dataForm.personalTitle}
+                      onChange={DataHandleChange}
+                      maxLength={40}
+                    />
+                  </div>
+
+                   <div>
+                    <Label htmlFor="personalRol">Rol</Label>
+                    <Input
+                      id="personalRol"
+                      name="personalRol"
+                      placeholder="Ej: Voluntario, Emprendedor, Freelancer..."
+                      type="text"
+                      value={dataForm.personalRol}
+                      onChange={DataHandleChange}
+                      maxLength={40}
+                    />
+                  </div>
+
+
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <Label htmlFor={`personalFrom`}>Desde</Label>
+                      <Input
+                        id="personalFrom"
+                        name="personalFrom"
+                        type="text"
+                        value={dataForm.personalFrom}
+                        onChange={DataHandleChange}
+                        placeholder="MM/AAAA"
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <Label htmlFor={"personalTo"}>Hasta</Label>
+                      <Input
+                        id="personalTo"
+                        name="personalTo"
+                        type="text"
+                        value={dataForm.personalTo}
+                        onChange={DataHandleChange}
+                        placeholder="MM/AAAA o presente"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="personalInfo">Información</Label>
+                    <Textarea
+                      id="personalInfo"
+                      name="personalInfo"
+                      placeholder="Ej: Christian Parisca"
+                      value={dataForm.personalInfo}
+                      onChange={DataHandleChange}
+                      rows={8}
+                      maxLength={500}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* --------------Sección de Tecnologias y Habilidades------------------*/}
@@ -772,6 +886,4 @@ export default function PersonalAside () {
       </form>
     </aside>
   );
-};
-
-
+}

@@ -2,12 +2,21 @@ import React from "react";
 import { useFormContext } from "../context/FormContext";
 import { useState, useEffect } from "react";
 
+interface ExperienceEntry {
+  id: number;
+  position: string;
+  company: string;
+  expFrom: string;
+  expTo: string;
+  details: string[];
+}
+
 const MinimalistCurriculum: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string>(
     "/src/assets/image/defaultImg.webp"
   );
 
-  const { dataForm } = useFormContext();
+  const { dataForm, checked } = useFormContext();
   const {
     fullName,
     title,
@@ -53,8 +62,8 @@ const MinimalistCurriculum: React.FC = () => {
             CONTACTO
           </h3>
           <div className="text-md text-gray-10 space-y-1">
-            <p>+{phone && phone.trim() ? phone : "34 688 555 123"}</p>
-            <p>{email && email.trim() ? email : "andres.lopez@devmail.com"}</p>
+            <p>{phone && phone.trim() ? phone : "+34 688 555 123"}</p>
+            <p>{email && email.trim() ? email : "example@devmail.com"}</p>
             <p>
               {location && location.trim() ? location : "Barcelona, España"}
             </p>
@@ -118,12 +127,12 @@ const MinimalistCurriculum: React.FC = () => {
         <section className="mb-6">
           <div className="mb-6 space-y-1">
             <h1 className="text-4xl text-black/80 font-bold uppercase tracking-widest">
-              {fullName ? fullName : "ANDRÉS LÓPEZ"}
+              {fullName ? fullName : "CHRISTIAN PARISCA"}
             </h1>
             <h2 className="text-xl font-light text-gray-900/80 inline-block">
               {title && title.trim()
                 ? title
-                : "Arquitecto de Software & Desarrollador Full Stack"}
+                : "Ingeniero De Sistemas & Desarrollador Full Stack"}
             </h2>
           </div>
           <h3 className="text-xl font-bold text-gray-800/90 mb-3 border-b-2 border-gray-300 pb-1 tracking-widest uppercase">
@@ -132,7 +141,7 @@ const MinimalistCurriculum: React.FC = () => {
           <p className="text-[0.95em] text-gray-700 leading-relaxed">
             {summary && summary.trim()
               ? summary
-              : `Arquitecto de Software con más de 8 años de experiencia
+              : `Ingeniero de Sistemas con más de 2 años de experiencia
                   liderando el ciclo de vida completo de aplicaciones web
                   escalables. Experiencia profunda en ecosistemas
                   React/Node.js y arquitectura de Microservicios (AWS
@@ -144,86 +153,10 @@ const MinimalistCurriculum: React.FC = () => {
 
         <section className="mb-10">
           <h3 className="text-xl font-bold text-gray-800/90 mb-4 border-b-2 border-gray-300 pb-1 tracking-widest uppercase">
-            Experiencia Laboral
+            {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
           </h3>
 
-          {experiences && experiences.length > 0 ? (
-            experiences.map(
-              ({ id, position, company, expFrom, expTo, details }) => (
-                <div id={id.toLocaleString()} className="relative ml-1">
-                  <div className="flex justify-between items-start">
-                    <h4 className="text-lg font-bold text-gray-700">
-                      {position ? position : "Arquitecto de Soluciones Senior"}
-                    </h4>
-                    <span className="text-sm font-semibold text-gray-500">
-                      {expFrom ? expFrom : "2024"} -{" "}
-                      {expTo ? expTo : "Presente"}
-                    </span>
-                  </div>
-                  <p className="text-md font-semibold text-gray-600 mb-1">
-                    {company ? company : "TecnoPanathon"}
-                  </p>
-                  <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
-                    <li className="w-full">
-                      {details[0]
-                        ? details[0]
-                        : `Reduje el tiempo de procesamiento en un 40%, lideré la migración de un monolito a una arquitectura de 5+
-                  Microservicios basados en AWS, reduciendo la latencia de
-                  respuesta en un 10%.`}
-                    </li>
-
-                    <li className="w-full">
-                      {details[1]
-                        ? details[1]
-                        : `Gestioné la infraestructura cloud con Terraform, mentoricé a un equipo de 6 desarrolladores Full Stack en
-                  patrones de diseño y code review.`}
-                    </li>
-
-                    <li className="w-full">
-                      {details[2]
-                        ? details[2]
-                        : `Uso de diferentes tecnologias como AWS, Python, Docker, GitHub Actions y Postman.`}
-                    </li>
-                  </ul>
-
-                  <div className="mt-4"></div>
-                </div>
-              )
-            )
-          ) : (
-            <div className="mb-6">
-              <div className="flex justify-between items-start">
-                <h4 className="text-lg font-bold text-gray-800">
-                  Arquitecto de Soluciones Senior
-                </h4>
-                <span className="text-sm font-semibold text-gray-500">
-                  2021 - Presente
-                </span>
-              </div>
-              <p className="text-md font-semibold text-gray-600 mb-1">
-                Tech Solutions S.L. | Barcelona
-              </p>
-              <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
-                <li>
-                  Reduje el tiempo de procesamiento en un 40%, lideré la
-                  migración de un monolito a una arquitectura de 5+
-                  Microservicios basados en AWS, reduciendo la latencia de
-                  respuesta en un 10%.
-                </li>
-
-                <li>
-                  Gestioné la infraestructura cloud con Terraform, mentoricé a
-                  un equipo de 6 desarrolladores Full Stack en patrones de
-                  diseño y code review.
-                </li>
-
-                <li>
-                  Uso de diferentes tecnologias como AWS, Python, Docker, GitHub
-                  Actions y Postman.
-                </li>
-              </ul>
-            </div>
-          )}
+          {checked.checked ? hasExperience(experiences) : hasNotExperience()}
         </section>
 
         <section>
@@ -265,6 +198,128 @@ const MinimalistCurriculum: React.FC = () => {
         </section>
       </main>
     </div>
+  );
+};
+
+const hasNotExperience = () => {
+  const { dataForm } = useFormContext();
+  const { personalTitle, personalRol, personalFrom, personalTo, personalInfo } =
+    dataForm;
+  return (
+    <>
+      <div className="mb-6">
+        <div className="mb-6 px-2">
+          <div className="flex justify-between items-start">
+            <h4 className="text-lg font-bold text-gray-700">
+              {personalTitle
+                ? personalTitle
+                : "Emprendimiento - Productos de Limpieza"}
+            </h4>
+            <span className="text-sm font-semibold text-gray-500">
+              {personalFrom ? personalFrom : "2021"} -{" "}
+              {personalTo ? personalTo : "Presente"}
+            </span>
+          </div>
+          <p className=" text-gray-600 mb-1">
+            {personalRol ? personalRol : "Emprendedor & Distribuidor"}
+          </p>
+
+          <p className="text-sm text-gray-700 mt-2 px-4 leading-relaxed text-justify">
+            <li>
+              {personalInfo
+                ? personalInfo
+                : `Desarrollé un emprendimiento de productos de limpieza desde el confort de mi hogar, 
+                          gestionando personalmente cada etapa, desde la preparación hasta el control de calidad. 
+                          Además, asumimos un rol de distribuidor donde abastecimos a otros negocios de los alrededores 
+                          de Palo Negro, lo que me permitió aprender sobre la atención al cliente, la gestión de inventarios 
+                          y la importancia de cumplir con los tiempos de entrega para mantener la confianza de los comerciantes locales.`}
+            </li>
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const hasExperience = (experiences: ExperienceEntry[]) => {
+  return (
+    <>
+      {experiences && experiences.length > 0 ? (
+        experiences.map(
+          ({ id, position, company, expFrom, expTo, details }) => (
+            <div key={id.toLocaleString()} className="relative ml-1">
+              <div className="flex justify-between items-start">
+                <h4 className="text-lg font-bold text-gray-700">
+                  {position ? position : "Arquitecto de Soluciones Senior"}
+                </h4>
+                <span className="text-sm font-semibold text-gray-500">
+                  {expFrom ? expFrom : "2024"} - {expTo ? expTo : "Presente"}
+                </span>
+              </div>
+              <p className="text-md font-semibold text-gray-600 mb-1">
+                {company ? company : "TecnoPanathon"}
+              </p>
+              <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
+                <li className="w-full">
+                  {details[0]
+                    ? details[0]
+                    : `Reduje el tiempo de procesamiento en un 40%, lideré la migración de un monolito a una arquitectura de 5+
+                  Microservicios basados en AWS, reduciendo la latencia de
+                  respuesta en un 10%.`}
+                </li>
+
+                <li className="w-full">
+                  {details[1]
+                    ? details[1]
+                    : `Gestioné la infraestructura cloud con Terraform, mentoricé a un equipo de 6 desarrolladores Full Stack en
+                  patrones de diseño y code review.`}
+                </li>
+
+                <li className="w-full">
+                  {details[2]
+                    ? details[2]
+                    : `Uso de diferentes tecnologias como AWS, Python, Docker, GitHub Actions y Postman.`}
+                </li>
+              </ul>
+
+              <div className="mt-4"></div>
+            </div>
+          )
+        )
+      ) : (
+        <div className="mb-6">
+          <div className="flex justify-between items-start">
+            <h4 className="text-lg font-bold text-gray-800">
+              Arquitecto de Soluciones Senior
+            </h4>
+            <span className="text-sm font-semibold text-gray-500">
+              2021 - Presente
+            </span>
+          </div>
+          <p className="text-md font-semibold text-gray-600 mb-1">
+            Tech Solutions S.L. | Barcelona
+          </p>
+          <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
+            <li>
+              Reduje el tiempo de procesamiento en un 40%, lideré la migración
+              de un monolito a una arquitectura de 5+ Microservicios basados en
+              AWS, reduciendo la latencia de respuesta en un 10%.
+            </li>
+
+            <li>
+              Gestioné la infraestructura cloud con Terraform, mentoricé a un
+              equipo de 6 desarrolladores Full Stack en patrones de diseño y
+              code review.
+            </li>
+
+            <li>
+              Uso de diferentes tecnologias como AWS, Python, Docker, GitHub
+              Actions y Postman.
+            </li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 };
 
