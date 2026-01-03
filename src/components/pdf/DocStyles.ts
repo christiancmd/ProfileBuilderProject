@@ -68,10 +68,10 @@ export const MinimalistStyles = StyleSheet.create({
     paddingTop: 30,
   },
   name: {
-    fontSize: 28,
+    fontSize: 19,
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    letterSpacing: 2,
+    letterSpacing: 1.2,
     color: '#111827',
   }, paragraph: {
     fontSize: 9,
@@ -102,11 +102,11 @@ export const MinimalistStyles = StyleSheet.create({
     color: "#374151",
     lineHeight: 1.6,
     marginBottom: 6,
-    textAlign: "justify",
+    textAlign: "left",
   },
   // Experiencia
   entryWrap: {
-    marginBottom: 15,
+    marginBottom: 8,
   },
   entryHeader: {
     flexDirection: 'row',
@@ -158,7 +158,7 @@ export const ModernStyles = StyleSheet.create({
     marginBottom: 20,
   },
   name: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 800,
     color: "#0f172a",
     letterSpacing: 1.4,

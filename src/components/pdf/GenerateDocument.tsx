@@ -85,9 +85,7 @@ const ModernDocument = React.memo(
             <Text style={styles.name}>
               {fullName?.toUpperCase() || "NOMBRE APELLIDO"}
             </Text>
-            <Text style={styles.title}>
-              {title || "Título Profesional"}
-            </Text>
+            <Text style={styles.title}>{title || "Título Profesional"}</Text>
             <Text style={styles.contactRow}>
               {location || "Localidad"} • {email || "correo@ejemplo.com"} •{" "}
               {phone || "Teléfono"}
@@ -99,7 +97,9 @@ const ModernDocument = React.memo(
             <Text style={styles.sectionTitle}>Perfil Profesional</Text>
             <View style={styles.titleUnderline} />
             <Text style={styles.paragraph}>
-              {summary || "Sin perfil profesional"}
+              {(summary || "Resumen no proporcionado.")
+                .toString()
+                .replace(/\r?\n|\r/g, " ")}
             </Text>
           </View>
 
@@ -109,9 +109,7 @@ const ModernDocument = React.memo(
             <View style={styles.mainCol}>
               {expValid && experiences && experiences.length > 0 ? (
                 <View>
-                  <Text style={styles.sectionTitle}>
-                    Experiencia Laboral
-                  </Text>
+                  <Text style={styles.sectionTitle}>Experiencia Laboral</Text>
                   <View style={styles.titleUnderline} />
 
                   {experiences?.map((exp) => (
@@ -142,9 +140,7 @@ const ModernDocument = React.memo(
                 </View>
               ) : (
                 <View>
-                  <Text style={styles.sectionTitle}>
-                    Experiencia Personal
-                  </Text>
+                  <Text style={styles.sectionTitle}>Experiencia Personal</Text>
                   <View style={styles.titleUnderline} />
 
                   <View style={styles.entryWrap}>
@@ -201,9 +197,7 @@ const ModernDocument = React.memo(
           </View>
 
           <View style={styles.sectionBottom} wrap={false}>
-            <Text style={styles.sectionTitle}>
-              Tecnologías & Habilidades
-            </Text>
+            <Text style={styles.sectionTitle}>Tecnologías & Habilidades</Text>
             <View style={styles.titleUnderline} />
 
             <View style={styles.skillsContainer}>
@@ -328,7 +322,9 @@ const MinimalistDocument = React.memo(
 
               <Text style={styles.sectionTitle}>Perfil Profesional</Text>
               <Text style={styles.summary}>
-                {summary || "Resumen no proporcionado."}
+                {(summary || "Resumen no proporcionado.")
+                  .toString()
+                  .replace(/\r?\n|\r/g, " ")}
               </Text>
 
               {expValid && experiences && experiences.length > 0 ? (
@@ -365,9 +361,7 @@ const MinimalistDocument = React.memo(
                 </View>
               ) : (
                 <View>
-                  <Text style={styles.sectionTitle}>
-                    Experiencia Personal
-                  </Text>
+                  <Text style={styles.sectionTitle}>Experiencia Personal</Text>
 
                   <View style={styles.entryWrap}>
                     <View style={styles.entryHeader}>
@@ -381,35 +375,39 @@ const MinimalistDocument = React.memo(
 
                     <Text style={styles.entryCompany}>{personalRol}</Text>
 
-                      <Text style={styles.entryList}>
-                        • {personalInfo || "Detalle no especificado"}
-                      </Text>
+                    <Text style={styles.entryList}>
+                      • {personalInfo || "Detalle no especificado"}
+                    </Text>
                   </View>
                 </View>
               )}
 
-              <Text style={styles.sectionTitle}>Tecnologías & Habilidades</Text>
-              {skills && skills.length > 0 ? (
-                skills.map((skill, i) => (
-                  <Text key={i} style={styles.skillsItemDetail}>
-                    <Text style={{ fontWeight: "bold" }}>
-                      {skill.skillTitle || "Habilidad no especificada"}:{" "}
-                    </Text>
-                    {skill.skillDetail || "Detalle no especificado"}
-                  </Text>
-                ))
-              ) : (
-                <Text style={styles.paragraph}>
-                  No hay tecnologías o habilidades añadidas.
+              <View>
+                <Text style={styles.sectionTitle}>
+                  Tecnologías & Habilidades
                 </Text>
-              )}
-
-              {!skills ||
-                (skills.length === 0 && (
+                {skills && skills.length > 0 ? (
+                  skills.map((skill, i) => (
+                    <Text key={i} style={styles.skillsItemDetail}>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {skill.skillTitle || "Habilidad no especificada"}:{" "}
+                      </Text>
+                      {skill.skillDetail || "Detalle no especificado"}
+                    </Text>
+                  ))
+                ) : (
                   <Text style={styles.paragraph}>
                     No hay tecnologías o habilidades añadidas.
                   </Text>
-                ))}
+                )}
+
+                {!skills ||
+                  (skills.length === 0 && (
+                    <Text style={styles.paragraph}>
+                      No hay tecnologías o habilidades añadidas.
+                    </Text>
+                  ))}
+              </View>
             </View>
           </View>
         </Page>
@@ -421,6 +419,7 @@ const MinimalistDocument = React.memo(
 export default function GenerateDocument() {
   const { templatePage } = useTemplateContext();
   const { dataForm, checked } = useFormContext();
+  const { fullName } = dataForm;
 
   const data = useMemo(() => dataForm, [dataForm]); // si dataForm cambia de referencia con frecuencia
   return (
@@ -428,7 +427,7 @@ export default function GenerateDocument() {
       {templatePage && templatePage === "modern" && (
         <PDFDownloadLink
           document={<ModernDocument data={data} expValid={checked.checked} />}
-          fileName="curriculum.pdf"
+          fileName={`curriculum_${fullName}.pdf`}
         >
           <Button
             type="button"
@@ -444,7 +443,7 @@ export default function GenerateDocument() {
           document={
             <MinimalistDocument data={data} expValid={checked.checked} />
           }
-          fileName="curriculum.pdf"
+          fileName={`curriculum_${fullName}.pdf`}
         >
           <Button
             type="button"

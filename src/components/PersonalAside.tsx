@@ -152,8 +152,8 @@ export default function PersonalAside() {
 
   // 2. Función para agregar una nueva entrada de educación
   const addEducation = () => {
-    // 4. Límite de 2: Solo agrega si hay menos de 2
-    if (educations.length < 2) {
+    // 4. Límite de 3: Solo agrega si hay menos de 3
+    if (educations.length < 3) {
       const newId = Date.now() + Math.random(); // Generar un ID único
       setEducations([
         ...educations,
@@ -166,7 +166,7 @@ export default function PersonalAside() {
         },
       ]);
     } else {
-      alert("Solo puedes añadir un máximo de 2 educaciones.");
+      alert("Solo puedes añadir un máximo de 3 educaciones.");
     }
   };
 
@@ -228,7 +228,7 @@ export default function PersonalAside() {
       </h2>
       <form className="space-y-4">
         {/* --------------Datos personales ---------------*/}
-        <div className="flex flex-col gap-5">
+        <section className="flex flex-col gap-5">
           <h3 className="text-teal-800 text-xl font-bold text-center">
             Datos personales
           </h3>
@@ -242,7 +242,7 @@ export default function PersonalAside() {
               placeholder="Ej: Christian Parisca"
               value={dataForm.fullName}
               onChange={DataHandleChange}
-              maxLength={26}
+              maxLength={35}
               required
             />
           </div>
@@ -272,7 +272,7 @@ export default function PersonalAside() {
               onChange={DataHandleChange}
               placeholder="Breve resumen de tu experiencia, habilidades y objetivos profesionales."
               rows={6}
-              maxLength={550}
+              maxLength={425}
             />
           </div>
 
@@ -290,10 +290,10 @@ export default function PersonalAside() {
               ></Input>
             </div>
           )}
-        </div>
+        </section>
 
         {/* ---------------Sección de Contacto ----------------*/}
-        <div className="pt-2 border-t">
+        <section className="pt-2 border-t">
           <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
             Contacto
           </h3>
@@ -308,7 +308,7 @@ export default function PersonalAside() {
                 type="tel"
                 value={dataForm.phone}
                 onChange={DataHandleChange}
-                placeholder="+XX XXX XXX XX XX"
+                placeholder="XX XXX XXX XX XX"
                 maxLength={26}
                 required
                 autoComplete="tel"
@@ -346,11 +346,11 @@ export default function PersonalAside() {
               />
             </div>
           </div>
-        </div>
+        </section>
 
         {/* --------------Sección de Educación ------------------*/}
 
-        <div className="pt-4 border-t flex flex-col items-center justify-center">
+        <section className="pt-4 border-t flex flex-col items-center justify-center">
           <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
             Educación
           </h3>
@@ -455,7 +455,7 @@ export default function PersonalAside() {
               </div>
             ))}
             {/* Botón para añadir (solo si hay menos de 2) */}
-            {educations.length < 2 && (
+            {educations.length < 3 && (
               <button
                 type="button"
                 onClick={addEducation}
@@ -465,11 +465,11 @@ export default function PersonalAside() {
               </button>
             )}
           </div>
-        </div>
+        </section>
 
         {/* --------------Sección de Idiomas ------------------*/}
 
-        <div className="pt-4 border-t">
+        <section className="pt-4 border-t">
           <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
             Idioma
           </h3>
@@ -502,11 +502,11 @@ export default function PersonalAside() {
               />
             </div>
           </div>
-        </div>
+        </section>
 
         {/* --------------Sección de Experiencia ------------------*/}
 
-        <div className="relative pt-4 border-t">
+        <section className="relative pt-4 border-t">
           <div className="w-full flex justify-center items-center mb-4">
             <h3 className="text-xl font-bold text-center text-teal-800">
               {showModalExperience
@@ -611,6 +611,25 @@ export default function PersonalAside() {
                     </h4>
 
                     <div className="flex flex-col gap-5">
+
+                        {/* Tarea o Proyecto Principal */}
+                      <div>
+                        <Label htmlFor={`responsibility-${exp.id}`}>
+                          Tarea/Proyecto Principal
+                        </Label>
+                        <Textarea
+                          id={`responsibility-${exp.id}`}
+                          name={`responsibility-${exp.id}`}
+                          value={exp.details?.[0] ?? ""}
+                          onChange={(e) => {
+                            updateExperienceDetail(exp.id, 0, e.target.value);
+                          }}
+                          placeholder="Ej: Gestioné la infraestructura cloud con Terraform"
+                          rows={3}
+                          maxLength={220}
+                        />
+                      </div>
+
                       {/* Logro Clave (Énfasis en resultados) */}
                       <div>
                         <Label htmlFor={`achievement-${exp.id}`}>
@@ -619,9 +638,9 @@ export default function PersonalAside() {
                         <Textarea
                           id={`achievement-${exp.id}`}
                           name={`achievement-${exp.id}`}
-                          value={exp.details?.[0] ?? ""}
+                          value={exp.details?.[1] ?? ""}
                           onChange={(e) => {
-                            updateExperienceDetail(exp.id, 0, e.target.value);
+                            updateExperienceDetail(exp.id, 1, e.target.value);
                           }}
                           placeholder="Ej: Reduje el tiempo de procesamiento en un 40%"
                           rows={3}
@@ -629,28 +648,10 @@ export default function PersonalAside() {
                         />
                       </div>
 
-                      {/* Tarea o Proyecto Principal */}
-                      <div>
-                        <Label htmlFor={`responsibility-${exp.id}`}>
-                          Tarea/Proyecto Principal
-                        </Label>
-                        <Textarea
-                          id={`responsibility-${exp.id}`}
-                          name={`responsibility-${exp.id}`}
-                          value={exp.details?.[1] ?? ""}
-                          onChange={(e) => {
-                            updateExperienceDetail(exp.id, 1, e.target.value);
-                          }}
-                          placeholder="Ej: Gestioné la infraestructura cloud con Terraform"
-                          rows={3}
-                          maxLength={300}
-                        />
-                      </div>
-
                       {/* Habilidades/Tecnologías Clave */}
                       <div>
                         <Label htmlFor={`techSkills-${exp.id}`}>
-                          Tecnologías/Skills
+                          Tecnologías/Habilidades
                         </Label>
                         <Textarea
                           id={`techSkills-${exp.id}`}
@@ -770,11 +771,11 @@ export default function PersonalAside() {
               </div>
             </div>
           )}
-        </div>
+        </section>
 
         {/* --------------Sección de Tecnologias y Habilidades------------------*/}
 
-        <div className="pt-4 border-t border-gray-200">
+        <section className="pt-4 border-t border-gray-200">
           <h3 className="text-2xl font-extrabold text-center text-teal-700 mb-5 tracking-wide">
             Habilidades / Tecnologías
           </h3>
@@ -792,7 +793,7 @@ export default function PersonalAside() {
                     onChange={(e) =>
                       updateSkill(0, "skillTitle", e.target.value)
                     }
-                    maxLength={25}
+                    maxLength={30}
                     placeholder="Título (Ej: Frontend)"
                   />
                 </div>
@@ -826,7 +827,7 @@ export default function PersonalAside() {
                     onChange={(e) =>
                       updateSkill(1, "skillTitle", e.target.value)
                     }
-                    maxLength={25}
+                    maxLength={30}
                     placeholder="Título (Ej: Cloud - Base de datos)"
                   />
                 </div>
@@ -860,7 +861,7 @@ export default function PersonalAside() {
                     onChange={(e) =>
                       updateSkill(2, "skillTitle", e.target.value)
                     }
-                    maxLength={25}
+                    maxLength={28}
                     placeholder="Título (Ej: Habilidades blandas)"
                   />
                 </div>
@@ -882,7 +883,7 @@ export default function PersonalAside() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </form>
     </aside>
   );

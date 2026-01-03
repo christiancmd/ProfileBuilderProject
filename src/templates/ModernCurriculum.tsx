@@ -10,6 +10,33 @@ interface ExperienceEntry {
   details: string[];
 }
 
+interface EducationEntry {
+  id: number;
+  degree: string;
+  institution: string;
+  eduFrom: string;
+  eduTo: string;
+}
+
+interface SkillsEntry {
+  skillTitle: string;
+  skillDetail: string;
+}
+
+interface PrincipalDataEntry {
+  fullName: string;
+  title: string;
+  summary: string;
+  phone: string;
+  email: string;
+  location: string;
+}
+
+interface LanguageEntry {
+  primaryLanguage: string;
+  secundaryLanguage: string;
+}
+
 export const ModernCurriculum: React.FC = () => {
   const { dataForm } = useFormContext();
   const { checked } = useFormContext();
@@ -30,17 +57,7 @@ export const ModernCurriculum: React.FC = () => {
   return (
     <div className="px-12 pt-10 pb-20 space-y-10 bg-white">
       <header className="text-center space-y-1">
-        <h1 className="text-4xl font-extrabold text-black/80 uppercase tracking-widest">
-          {fullName ? fullName : "CHRISTIAN PARISCA"}
-        </h1>
-        <h2 className="text-xl font-light text-gray-900/80">
-          {title ? title : "Ingeniero De Sistemas & Desarrollador Full Stack"}
-        </h2>
-        <div className="flex justify-center flex-wrap gap-x-5 gap-y-1 text-sm text-gray-600">
-          <span>{location ? location : "Barcelona, España"}</span>
-          <span>{email ? email : "example@devmail.com"}</span>
-          <span>{phone ? phone : "+34 688 555 123"}</span>
-        </div>
+        {hasPrincipalData({ fullName, title, location, email, phone, summary })}
       </header>
 
       <section>
@@ -61,19 +78,15 @@ export const ModernCurriculum: React.FC = () => {
       </section>
 
       {/* 3. EXPERIENCIA Y EDUCACIÓN (Dos Columnas Lógicas) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <main className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* COLUMNA PRINCIPAL: Experiencia (2/3 del ancho) */}
-        <div className="md:col-span-2 space-y-8">
-          <section>
-            <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-gray-800/90 uppercase tracking-wider">
-              {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
-            </h3>
+        <section className="md:col-span-2 space-y-8">
+          <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-gray-800/90 uppercase tracking-wider">
+            {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
+          </h3>
 
-            {checked.checked
-              ? hasExperience(experiences)
-              : hasNotExperience()}
-          </section>
-        </div>
+          {checked.checked ? hasExperience(experiences) : hasNotExperience()}
+        </section>
 
         <div className="md:col-span-1 space-y-6 pt-1">
           <section>
@@ -81,252 +94,238 @@ export const ModernCurriculum: React.FC = () => {
               Educación
             </h3>
 
-            {educations && educations.length > 0 ? (
-              educations.map(({ id, degree, institution, eduFrom, eduTo }) => (
-                <div key={id} className="mb-4">
-                  <h4 className="text-lg font-semibold text-gray-700 ">
-                    {degree ? degree : "Grado en Ingeniería Informática"}
-                  </h4>
-                  <p className="text-md text-gray-600">
-                    {institution
-                      ? institution
-                      : "Universidad de Barcelona (UB)"}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {eduFrom ? eduFrom : "2013"} - {eduTo ? eduTo : "2017"}
-                  </p>
-                </div>
-              ))
-            ) : (
-              /* Item de Educación por defecto si no hay datos */
-              <div className="mb-4">
-                <h4 className="text-lg font-semibold text-gray-700">
-                  {"Grado en Ingeniería Informática"}
-                </h4>
-                <p className="text-md text-gray-600">
-                  {"Universidad de Barcelona (UB)"}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {"2013"} - {"2017"}
-                </p>
-              </div>
-            )}
+            {hasEducation(educations)}
           </section>
 
           <section>
             <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-gray-800/90 uppercase tracking-wider">
               Idiomas
             </h3>
-            <ul className="text-base text-gray-600 space-y-1">
-              <li>{primaryLanguage ? primaryLanguage : "Español: Nativo"}</li>
-              <li>
-                {secundaryLanguage
-                  ? secundaryLanguage
-                  : "Inglés: C2 - Bilingüe (Certificado TOEFL)"}
-              </li>
-            </ul>
+            
+            {hasLanguage({ primaryLanguage, secundaryLanguage })}
           </section>
         </div>
-      </div>
+      </main>
 
       {/* 4. TECNOLOGIAS Y HABILIDADES   */}
 
-      <div className="space-y-8 pt-2 ">
-        <section>
-          <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-800/90 uppercase tracking-wider">
-            Tecnologías & Habilidades
-          </h3>
+      <section className="space-y-8 pt-2 ">
+        <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-800/90 uppercase tracking-wider">
+          Tecnologías & Habilidades
+        </h3>
 
-          {skills && skills.length > 0 ? (
-            <div className="text-base text-gray-700 leading-relaxed space-y-2">
-              {skills[0] && (
-                <p>
-                  <span className="font-semibold text-gray-700">
-                    {skills[0]?.skillTitle ? skills[0].skillTitle : "Frontend"}{" "}
-                    :
-                  </span>{" "}
-                  {skills[0]?.skillDetail
-                    ? skills[0].skillDetail
-                    : "React, TypeScript, Redux, Next.js, Tailwind CSS"}
-                  .
-                </p>
-              )}
+        {hasSkills(skills || [])}
+      </section>
+    </div>
+  );
+};
 
-              {skills[1] && (
-                <p>
-                  <span className="font-semibold text-gray-700">
-                    {skills[1]?.skillTitle
-                      ? skills[1].skillTitle
-                      : " Cloud y Base de Datos"}
-                    :
-                  </span>{" "}
-                  {""}
-                  {skills[1]?.skillDetail
-                    ? skills[1].skillDetail
-                    : " AWS (S3, EC2), PostgreSQL, MongoDB, Terraform"}
-                  .
-                </p>
-              )}
+const hasPrincipalData = ({
+  fullName,
+  title,
+  location,
+  email,
+  phone,
+}: PrincipalDataEntry) => {
 
-              {skills[2] && (
-                <p>
-                  <span className="font-semibold text-gray-700">
-                    {skills[2]?.skillTitle
-                      ? skills[2].skillTitle
-                      : "Habilidades Blandas"}
-                    :
-                  </span>{" "}
-                  {""}
-                  {skills[2]?.skillDetail
-                    ? skills[2].skillDetail
-                    : `Liderazgo de equipos, Gestión de Proyectos, Comunicación
-                efectiva, Resolución de problemas`}
-                  .
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="text-base text-gray-700/90 leading-relaxed space-y-2">
-              <p>
-                <span className="font-semibold text-gray-700">Frontend:</span>{" "}
-                React, TypeScript, Redux, Next.js, Tailwind CSS.
-              </p>
+  const DEFAULTS = {
+    fullName: "CHRISTIAN PARISCA",
+    title: "Ingeniero De Sistemas & Desarrollador Full Stack",
+    location: "Barcelona, España",
+    email: "christian.parisca@example.com",
+    phone: "+34 688 555 123",
+  };
 
-              <p>
-                <span className="font-semibold text-gray-700">
-                  Cloud & Bases de Datos:
-                </span>{" "}
-                AWS (S3, EC2), PostgreSQL, MongoDB, Terraform.
-              </p>
-
-              <p>
-                <span className="font-semibold text-gray-700">
-                  Habilidades Blandas:
-                </span>{" "}
-                Liderazgo de equipos, Gestión de Proyectos, Comunicación
-                efectiva, Resolución de problemas.
-              </p>
-            </div>
-          )}
-        </section>
+  return (
+    <div>
+      <h1 className="text-4xl font-extrabold text-black/80 uppercase tracking-wider">
+        {fullName || DEFAULTS.fullName}
+      </h1>
+      <h2 className="text-xl font-light text-gray-900/80">
+        {title || DEFAULTS.title}
+      </h2>
+      <div className="flex justify-center flex-wrap gap-x-5 gap-y-1 text-sm text-gray-600">
+        <span>{location || DEFAULTS.location}</span>
+        <span>{email || DEFAULTS.email}</span>
+        <span>{phone || DEFAULTS.phone}</span>
       </div>
     </div>
+  );
+};
+
+const hasLanguage = ({ primaryLanguage, secundaryLanguage }: LanguageEntry) => {
+
+  const DEFAULTS = {
+    primaryLanguage: "Español - Nativo",
+    secundaryLanguage: "Inglés - Avanzado (C1)",
+  };
+
+  return (
+    <ul className="text-base text-gray-600 space-y-1">
+      <li>{primaryLanguage || DEFAULTS.primaryLanguage}</li>
+      <li>{secundaryLanguage || DEFAULTS.secundaryLanguage}</li>
+    </ul>
+  );
+}
+
+const hasSkills = (skills: SkillsEntry[]) => {
+  const DEFAULT_SKILLS = [
+    {
+      skillTitle: "Frontend",
+      skillDetail: "React, TypeScript, Redux, Next.js, Tailwind CSS.",
+    },
+    {
+      skillTitle: "Cloud & Bases de Datos",
+      skillDetail: "AWS (S3, EC2), PostgreSQL, MongoDB, Terraform.",
+    },
+    {
+      skillTitle: "Habilidades Blandas",
+      skillDetail:
+        "Liderazgo de equipos, Gestión de Proyectos, Comunicación efectiva, Resolución de problemas.",
+    },
+  ];
+
+  const skillsToRender = skills && skills.length > 0 ? skills : DEFAULT_SKILLS;
+
+  return (
+    <div className="text-gray-700 leading-relaxed space-y-2">
+      {skillsToRender.map((skill, index) => (
+        <p key={index}>
+          <span className="font-semibold text-gray-700">
+            {skill.skillTitle || "Sin título"}:{" "}
+          </span>
+          {skill.skillDetail || "Sin detalle"}.{" "}
+        </p>
+      ))}
+    </div>
+  );
+};
+
+const hasEducation = (educations: EducationEntry[]) => {
+  const DEFAULT_EDUCATION = [
+    {
+      id: "default",
+      degree: "Grado en Ingeniería Informática",
+      institution: "Universidad de Barcelona (UB)",
+      eduFrom: "2013",
+      eduTo: "2017",
+    },
+  ];
+
+  const educationToRender =
+    educations && educations.length > 0 ? educations : DEFAULT_EDUCATION;
+
+  return (
+    <>
+      {educationToRender.map(({ id, degree, institution, eduFrom, eduTo }) => (
+        <div key={id} className="mb-4">
+          <h4 className="text-lg font-semibold text-gray-700 ">
+            {degree || "Grado en Ingeniería Informática"}
+          </h4>
+          <p className="text-md text-gray-600">
+            {institution || "Universidad de Barcelona (UB)"}
+          </p>
+          <p className="text-sm text-gray-500">
+            {eduFrom || "2013"} - {eduTo || "2017"}
+          </p>
+        </div>
+      ))}
+    </>
   );
 };
 
 const hasNotExperience = () => {
-
   const { dataForm } = useFormContext();
-  const {personalTitle, personalRol, personalFrom, personalTo, personalInfo} = dataForm;
+  const { personalTitle, personalRol, personalFrom, personalTo, personalInfo } =
+    dataForm;
+
+  const DEFAULTS = {
+    id: "default",
+    personalTitle: "Emprendimiento - Productos de Limpieza",
+    personalRol: "Emprendedor & Distribuidor",
+    personalFrom: "2021",
+    personalTo: "Presente",
+    personalInfo: `Desarrollé un emprendimiento de productos de limpieza desde el confort de mi hogar, 
+      gestionando personalmente cada etapa, desde la preparación hasta el control de calidad. 
+      Además, asumimos un rol de distribuidor donde abastecimos a otros negocios de los alrededores,`,
+  };
 
   return (
-    <div className="mb-6">  
-            <div className="mb-6 px-2">
-              <div className="flex justify-between items-start">
-                <h4 className="text-lg font-bold text-gray-700">
-                  {personalTitle
-                    ? personalTitle
-                    : "Emprendimiento - Productos de Limpieza"}
-                </h4>
-                <span className="text-sm font-semibold text-gray-500">
-                  {personalFrom ? personalFrom : "2021"} - {personalTo ? personalTo : "Presente"}
-                </span>
-              </div>
-              <p className=" text-gray-600 mb-1">
-                {personalRol ? personalRol : "Emprendedor & Distribuidor"}
-              </p>
+    <>
+      <div className="mb-12 px-2">
+        <div className="flex justify-between items-start">
+          <h4 className="text-lg font-bold text-gray-700">
+            {personalTitle || DEFAULTS.personalTitle}
+          </h4>
+          <span className="text-sm font-semibold text-gray-500">
+            {personalFrom || DEFAULTS.personalFrom} -{" "}
+            {personalTo || DEFAULTS.personalTo}
+          </span>
+        </div>
+        <p className=" text-gray-600 mb-1">
+          {personalRol || DEFAULTS.personalRol}
+        </p>
 
-              <p className="text-sm text-gray-700 mt-2 px-4 leading-relaxed text-justify">
-                <li>
-                  {personalInfo
-                  ? personalInfo
-                  : `Desarrollé un emprendimiento de productos de limpieza desde el confort de mi hogar, 
-                    gestionando personalmente cada etapa, desde la preparación hasta el control de calidad. 
-                    Además, asumimos un rol de distribuidor donde abastecimos a otros negocios de los alrededores 
-                    de Palo Negro, lo que me permitió aprender sobre la atención al cliente, la gestión de inventarios 
-                    y la importancia de cumplir con los tiempos de entrega para mantener la confianza de los comerciantes locales.`}
-                </li>
-              </p>
-            </div>       
-    </div>
+        <div className="text-sm text-gray-700 mt-2 px-4 leading-relaxed text-justify">
+          <li className="text-sm text-gray-700 mt-2 px-4 leading-relaxed text-justify">
+            {personalInfo || DEFAULTS.personalInfo}
+          </li>
+        </div>
+      </div>
+    </>
   );
 };
 
 const hasExperience = (experiences: ExperienceEntry[]) => {
+  const DEFAULT_EXPERIENCE = [
+    {
+      id: "default",
+      position: "Arquitecto de Soluciones Senior",
+      company: "Tech Solutions S.L. | Barcelona",
+      expFrom: "2021",
+      expTo: "Presente",
+      details: [
+        "Reduje el tiempo de procesamiento en un 40%, lideré la migración de un monolito a una arquitectura de 5+ Microservicios basados en AWS, reduciendo la latencia de respuesta en un 10%.",
+        "Gestioné la infraestructura cloud con Terraform y mentoricé a un equipo de 6 desarrolladores Full Stack en patrones de diseño y code review.",
+        "Uso de tecnologías como AWS, Python, Docker, GitHub Actions y Postman.",
+      ],
+    },
+  ];
+
+  const hasExpToRender =
+    experiences && experiences.length > 0 ? experiences : DEFAULT_EXPERIENCE;
+
   return (
     <>
-      {experiences && experiences.length > 0 ? (
-        experiences.map(
-          ({ id, position, company, expFrom, expTo, details }) => (
-            <div key={id.toLocaleString()} className="mb-6">
-              <div className="flex justify-between items-start">
-                <h4 className="text-lg font-bold text-gray-700">
-                  {position ? position : "Arquitecto de Soluciones Senior"}
-                </h4>
-                <span className="text-sm font-semibold text-gray-500">
-                  {expFrom ? expFrom : "2024"} - {expTo ? expTo : "Presente"}
-                </span>
-              </div>
-              <p className="text-md font-semibold text-gray-600 mb-1">
-                {company ? company : "TecnoPanathon"}
-              </p>
-              <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
-                <li className="w-full">
-                  {details[0]
-                    ? details[0]
-                    : `Reduje el tiempo de procesamiento en un 40%, lideré la migración de un monolito a una arquitectura de 5+
-                  Microservicios basados en AWS, reduciendo la latencia de
-                  respuesta en un 10%.`}
-                </li>
-
-                <li className="w-full">
-                  {details[1]
-                    ? details[1]
-                    : `Gestioné la infraestructura cloud con Terraform, mentoricé a un equipo de 6 desarrolladores Full Stack en
-                  patrones de diseño y code review.`}
-                </li>
-
-                <li className="w-full">
-                  {details[2]
-                    ? details[2]
-                    : `Uso de diferentes tecnologias como AWS, Python, Docker, GitHub Actions y Postman.`}
-                </li>
-              </ul>
+      {hasExpToRender.map(
+        ({ id, position, company, expFrom, expTo, details }) => (
+          <div key={id.toLocaleString()} className="mb-6">
+            <div className="flex justify-between items-start">
+              <h4 className="text-lg font-bold text-gray-700">
+                {position || "Arquitecto de Soluciones Senior"}
+              </h4>
+              <span className="text-sm font-semibold text-gray-500">
+                {expFrom || "2024"} - {expTo || "Presente"}
+              </span>
             </div>
-          )
-        )
-      ) : (
-        <div className="mb-6">
-          <div className="flex justify-between items-start">
-            <h4 className="text-lg font-bold text-gray-800">
-              Arquitecto de Soluciones Senior
-            </h4>
-            <span className="text-sm font-semibold text-gray-500">
-              2021 - Presente
-            </span>
+
+            <p className="text-md font-semibold text-gray-600 mb-1">
+              {company || "TecnoPanathon"}
+            </p>
+
+            {details && details.length > 0 && (
+              <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
+                {details.map((detail, index) => (
+                  <li key={index} className="w-full">
+                    {detail || DEFAULT_EXPERIENCE[0].details[index]}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="mt-4"></div>
           </div>
-          <p className="text-md font-semibold text-gray-600 mb-1">
-            Tech Solutions S.L. | Barcelona
-          </p>
-          <ul className="list-disc text-sm text-gray-700 space-y-1 ml-5 mt-2">
-            <li>
-              Reduje el tiempo de procesamiento en un 40%, lideré la migración
-              de un monolito a una arquitectura de 5+ Microservicios basados en
-              AWS, reduciendo la latencia de respuesta en un 10%.
-            </li>
-
-            <li>
-              Gestioné la infraestructura cloud con Terraform, mentoricé a un
-              equipo de 6 desarrolladores Full Stack en patrones de diseño y
-              code review.
-            </li>
-
-            <li>
-              Uso de diferentes tecnologias como AWS, Python, Docker, GitHub
-              Actions y Postman.
-            </li>
-          </ul>
-        </div>
+        )
       )}
     </>
   );

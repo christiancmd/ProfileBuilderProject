@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import type { ChangeEvent } from "react";
 
 interface HandleCheckboxEvent {
@@ -89,11 +89,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     experiences: [],
     skills: [],
   });
-
-  useEffect(() => {
-    console.log("Data Form updated:", dataForm);
-  }, [dataForm])
-  
 
   const [checked, setChecked] = useState<HandleCheckboxEvent>({ checked: true });
 
