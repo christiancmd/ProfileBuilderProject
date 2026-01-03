@@ -16,8 +16,8 @@ const PdfContainer: React.FC = () => {
 
 export default function ProfileHeader({ title }: ProfileHeaderProps) {
   return (
-    <div className="w-full flex flex-row justify-between items-center p-4">
-      <h2 className="text-xl font-semibold">{title}</h2>
+    <div className="w-full flex flex-row justify-between items-center p-4 border-b border-gray-700 mb-4">
+      <h2 className="text-md xl:text-2xl font-semibold pr-6 xl:pr-0">{title}</h2>
       <PdfContainer />
     </div>
   );

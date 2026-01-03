@@ -426,14 +426,15 @@ export default function GenerateDocument() {
     <div>
       {templatePage && templatePage === "modern" && (
         <PDFDownloadLink
-          document={<ModernDocument data={data} expValid={checked.checked} />}
+          document={
+            <ModernDocument data={data} expValid={checked.checked} />}
           fileName={`curriculum_${fullName}.pdf`}
         >
           <Button
             type="button"
-            className="font-normal border rounded-lg py-2.5 px-6 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
+            className="text-sm xl:text-lg font-normal border rounded-lg py-2.5 px-6 xl:px-10 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
           >
-            Descargar CV
+            Descargar
           </Button>
         </PDFDownloadLink>
       )}
@@ -447,9 +448,9 @@ export default function GenerateDocument() {
         >
           <Button
             type="button"
-            className="font-normal border rounded-lg py-2.5 px-6 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
+            className="text-sm xl:text-lg font-normal border rounded-lg py-2.5 px-6 xl:px-10 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
           >
-            Descargar CV
+            Descargar
           </Button>
         </PDFDownloadLink>
       )}

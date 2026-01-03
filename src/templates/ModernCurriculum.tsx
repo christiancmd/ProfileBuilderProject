@@ -88,7 +88,7 @@ export const ModernCurriculum: React.FC = () => {
           {checked.checked ? hasExperience(experiences) : hasNotExperience()}
         </section>
 
-        <div className="md:col-span-1 space-y-6 pt-1">
+        <div className="md:col-span-1 space-y-6 ">
           <section>
             <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-gray-800/90 uppercase tracking-wider">
               Educación
@@ -109,7 +109,7 @@ export const ModernCurriculum: React.FC = () => {
 
       {/* 4. TECNOLOGIAS Y HABILIDADES   */}
 
-      <section className="space-y-8 pt-2 ">
+      <section className="space-y-8 pt-2 pb-10 ">
         <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-3 text-gray-800/90 uppercase tracking-wider">
           Tecnologías & Habilidades
         </h3>

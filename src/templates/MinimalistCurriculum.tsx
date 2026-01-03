@@ -69,10 +69,10 @@ const MinimalistCurriculum: React.FC = () => {
   }, [profileImage]);
 
   return (
-    <div className="relative bg-gray-900 flex max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
-      <aside className="relative text-white p-8 w-[75] min-w-[18rem] max-w-[18em] shrink-0 h-full flex flex-col justify-between gap-8.5 overflow-hidden">
+    <div className="relative bg-gray-900 flex flex-col md:flex-row max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
+      <aside className="relative text-white p-6 md:p-8 w-full md:w-72 min-w-[18rem] max-w-full md:max-w-[18em] shrink-0 h-full flex flex-col justify-between gap-8 overflow-hidden">
         <div className="w-full">
-          <div className="size-56 overflow-hidden m-0 mx-auto bg-gray-600 rounded-full">
+          <div className="w-56 h-56 overflow-hidden m-0 mx-auto bg-gray-600 rounded-full">
             <img
               className="w-full h-full object-cover"
               src={previewUrl}
@@ -113,7 +113,7 @@ const MinimalistCurriculum: React.FC = () => {
         </div>
       </aside>
 
-      <main className="grow py-8 px-10 bg-white">
+      <main className="grow py-8 px-6 md:px-10 bg-white">
         <section className="mb-6">
           {hasPrincipalData({ fullName, title, summary })}
         </section>

@@ -10,7 +10,7 @@ export default function SectionButton() {
   }
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col xl:flex-row gap-6">
       <Button
         onClick={() => handleTemplateChange('modern')}
         type="button"
