@@ -222,7 +222,7 @@ export default function PersonalAside() {
 };
 
   return (
-    <aside className="border rounded-lg p-4 md:col-span-1 order-1 md:order-0 bg-white shadow-lg">
+    <aside className="rounded-xl p-4 md:p-6 md:col-span-1 order-1 md:order-0 bg-white/60 shadow-lg border border-gray-100">
       <h2 className="text-2xl text-gray-700 font-bold text-center border-b pb-4 mb-6 ">
         Información Personal
       </h2>
@@ -360,7 +360,7 @@ export default function PersonalAside() {
             {educations.map((edu, index) => (
               <div
                 key={edu.id}
-                className={`p-4 border border-gray-500 rounded-b-2xl ${
+                className={`p-5 md:p-6 border border-gray-200 rounded-lg bg-white/50 shadow-sm ${
                   index > 0 ? "mt-4" : ""
                 }`}
               >
@@ -447,7 +447,7 @@ export default function PersonalAside() {
                   <button
                     type="button"
                     onClick={() => removeEducation(edu.id)}
-                    className="mt-4 p-2 w-full bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                    className="mt-4 w-full py-2 px-3 bg-linear-to-r from-red-50 to-red-100 text-red-700 rounded-lg hover:from-red-100 hover:to-red-200 transition shadow-sm"
                   >
                     Quitar Educación
                   </button>
@@ -459,7 +459,7 @@ export default function PersonalAside() {
               <button
                 type="button"
                 onClick={addEducation}
-                className="p-2 mt-4 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+                className="mt-4 w-full py-2 px-3 bg-linear-to-r from-teal-600 to-teal-500 text-white rounded-lg hover:from-teal-700 hover:to-teal-600 transition shadow-sm"
               >
                 Agregar Otra Educación
               </button>
@@ -515,19 +515,27 @@ export default function PersonalAside() {
             </h3>
 
             <input
-              className="absolute right-0 h-4 w-4 mr-2.5"
-              type="checkbox"
-              name="hasExperience"
-              id="hasExperience"
-              onChange={handleExperienceChange}
-            />
+  type="checkbox"
+  name="hasExperience"
+  id="hasExperience"
+  onChange={handleExperienceChange}
+  className="
+    absolute right-4 top-3 h-6 w-6 mr-2.5 
+    appearance-none border-2 border-gray-300 rounded
+    checked:bg-red-200 checked:border-red-500
+    focus:outline-none focus:ring-2 focus:ring-red-800
+    transition-all cursor-pointer
+    checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg/viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath/d=%22M18%206L6%2018M6%206l12%2018%22/%3E%3C/svg%3E')]
+    bg-center bg-no-repeat bg-size[:14px_14px]
+  "
+/>
           </div>
           {showModalExperience == true ? (
-            <div className="flex flex-col gap-4  ">
+            <div className="flex flex-col gap-4">
               {experiences.map((exp, index) => (
                 <div
                   key={exp.id}
-                  className={`border border-gray-500 rounded-b-2xl  p-4 ${
+                  className={`p-5 md:p-6 border border-gray-200 rounded-lg bg-white/50 shadow-sm ${
                     index > 0 ? "mt-4" : ""
                   } `}
                 >
@@ -605,7 +613,7 @@ export default function PersonalAside() {
                     </div>
                   </div>
 
-                  <div className="pt-2 ">
+                  <div className="pt-2">
                     <h4 className="text-md text-center font-semibold text-teal-900 my-4">
                       Logros y Responsabilidades
                     </h4>
@@ -673,7 +681,7 @@ export default function PersonalAside() {
                     <button
                       type="button"
                       onClick={() => removeExperience(exp.id)}
-                      className="mt-4 p-2 w-full bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                      className="mt-4 w-full py-2 px-3 bg-linear-to-r from-red-50 to-red-100 text-red-700 rounded-lg hover:from-red-100 hover:to-red-200 transition shadow-sm"
                     >
                       Quitar Experiencia
                     </button>
@@ -686,7 +694,7 @@ export default function PersonalAside() {
                 <button
                   type="button"
                   onClick={addExperience}
-                  className="p-2 mt-4 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+                  className="mt-4 w-full py-2 px-3 bg-linear-to-r from-teal-600 to-teal-500 text-white rounded-lg hover:from-teal-700 hover:to-teal-600 transition shadow-sm"
                 >
                   Agregar Otra Experiencia
                 </button>
@@ -698,7 +706,7 @@ export default function PersonalAside() {
                 Has indicado que no tienes experiencia laboral.
               </p>
 
-              <div className="w-full mt-8 border border-gray-400 rounded-xl p-5 shadow-lg bg-white/50 backdrop-blur-sm transition duration-300 hover:border-teal-500 hover:shadow-teal-200">
+              <div className="w-full mt-8 border border-gray-200 rounded-xl p-5 shadow-sm bg-white/60 transition duration-300 hover:border-teal-300 hover:shadow-teal-100">
                 <div className="space-y-4">
                  
                   <div>
@@ -765,6 +773,7 @@ export default function PersonalAside() {
                       rows={8}
                       maxLength={500}
                       required
+                      
                     />
                   </div>
                 </div>
