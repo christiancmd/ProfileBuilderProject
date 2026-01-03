@@ -4,6 +4,7 @@ import Input from "./ui/Atoms/Input";
 import { useFormContext } from "../context/FormContext";
 import { useTemplateContext } from "../context/TemplateContext";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 interface EducationEntry {
   id: number;
@@ -211,19 +212,25 @@ export default function PersonalAside() {
   };
 
   const handleExperienceChange = () => {
-  const nextValue = !showModalExperience;
-  setShowModalExperience(nextValue);
+    const nextValue = !showModalExperience;
+    setShowModalExperience(nextValue);
 
-  try {
-    setChecked({ checked: nextValue });
-  } catch (error) {
-    console.error("Error al actualizar context:", error);
-  }
-};
+    if (nextValue) {
+      toast.success("Modal de experiencia activado");
+    } else {
+      toast.error("Modal de experiencia desactivado");
+    }
+
+    try {
+      setChecked({ checked: nextValue });
+    } catch (error) {
+      console.error("Error al actualizar context:", error);
+    }
+  };
 
   return (
     <aside className="rounded-xl p-4 md:p-6 md:col-span-1 order-1 md:order-0 bg-white/60 shadow-lg border border-gray-100">
-      <h2 className="text-2xl text-gray-700 font-bold text-center border-b pb-4 mb-6 ">
+      <h2 className="text-2xl text-gray-700 font-bold text-center border-b pb-4 xl:pb-6 mb-6 ">
         Información Personal
       </h2>
       <form className="space-y-4">
@@ -515,20 +522,20 @@ export default function PersonalAside() {
             </h3>
 
             <input
-  type="checkbox"
-  name="hasExperience"
-  id="hasExperience"
-  onChange={handleExperienceChange}
-  className="
-    absolute right-4 top-3 h-6 w-6 mr-2.5 
-    appearance-none border-2 border-gray-300 rounded
-    checked:bg-red-200 checked:border-red-500
-    focus:outline-none focus:ring-2 focus:ring-red-800
-    transition-all cursor-pointer
-    checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg/viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath/d=%22M18%206L6%2018M6%206l12%2018%22/%3E%3C/svg%3E')]
-    bg-center bg-no-repeat bg-size[:14px_14px]
-  "
-/>
+              type="checkbox"
+              name="hasExperience"
+              id="hasExperience"
+              onChange={handleExperienceChange}
+              className="
+                absolute right-1 top-4 h-6 w-6 mr-2.5 
+                appearance-none border-2 border-gray-300 rounded
+                checked:bg-red-200 checked:border-red-500
+                focus:outline-none focus:ring-2 focus:ring-red-800
+                transition-all cursor-pointer
+                checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg/viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%224%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpath/d=%22M18%206L6%2018M6%206l12%2018%22/%3E%3C/svg%3E')]
+                bg-center bg-no-repeat bg-size[:14px_14px]
+              "
+            />
           </div>
           {showModalExperience == true ? (
             <div className="flex flex-col gap-4">
@@ -619,8 +626,7 @@ export default function PersonalAside() {
                     </h4>
 
                     <div className="flex flex-col gap-5">
-
-                        {/* Tarea o Proyecto Principal */}
+                      {/* Tarea o Proyecto Principal */}
                       <div>
                         <Label htmlFor={`responsibility-${exp.id}`}>
                           Tarea/Proyecto Principal
@@ -708,7 +714,6 @@ export default function PersonalAside() {
 
               <div className="w-full mt-8 border border-gray-200 rounded-xl p-5 shadow-sm bg-white/60 transition duration-300 hover:border-teal-300 hover:shadow-teal-100">
                 <div className="space-y-4">
-                 
                   <div>
                     <Label htmlFor="personalTitle">Actividad</Label>
                     <Input
@@ -722,7 +727,7 @@ export default function PersonalAside() {
                     />
                   </div>
 
-                   <div>
+                  <div>
                     <Label htmlFor="personalRol">Rol</Label>
                     <Input
                       id="personalRol"
@@ -734,7 +739,6 @@ export default function PersonalAside() {
                       maxLength={40}
                     />
                   </div>
-
 
                   <div className="flex gap-2">
                     <div className="flex-1">
@@ -773,7 +777,6 @@ export default function PersonalAside() {
                       rows={8}
                       maxLength={500}
                       required
-                      
                     />
                   </div>
                 </div>

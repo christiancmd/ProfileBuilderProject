@@ -4,6 +4,7 @@ import ProfileBuilder from "./components/ProfileBuilder";
 import SectionButton from "./components/ui/Molecules/SectionButton";
 import { FormProvider } from "./context/FormContext";
 import { TemplateProvider } from "./context/TemplateContext";
+import {Toaster} from "react-hot-toast";
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
             <ProfileBuilder/>
           </main>
           <Footer />
+
+          <Toaster position="top-right" reverseOrder={false} />
         </TemplateProvider>
       </FormProvider>
     </>
