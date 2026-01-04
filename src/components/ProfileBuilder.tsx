@@ -4,8 +4,19 @@ import MinimalistCurriculum from "../templates/MinimalistCurriculum";
 import ModernCurriculum from "../templates/ModernCurriculum";
 import { useTemplateContext } from "../context/TemplateContext";
 
+const TEMPLATE_COMPONENTS = {
+  modern: ModernCurriculum,
+  minimalist: MinimalistCurriculum,
+};
+
+// Extraemos los nombres válidos automáticamente para TypeScript
+type TemplateName = keyof typeof TEMPLATE_COMPONENTS;
+
 export default function ProfileBuilder() {
   const { templatePage } = useTemplateContext();
+
+  //Dictionary Pattern
+  const SelectedTemplate = TEMPLATE_COMPONENTS[templatePage as TemplateName];
 
   return (
     <div className="w-full min-h-screen flex flex-col lg:grid lg:grid-cols-4 gap-4 p-2 lg:p-4 border-2 border-gray-700 rounded-md bg-gray-200">
@@ -14,10 +25,8 @@ export default function ProfileBuilder() {
         <ProfileHeader title="Previsualización Del Curriculum" />
         <div className="w-full bg-linear-to-b from-teal-800 to-cyan-700 border border-gray-700 py-8 flex flex-col items-center rounded-lg gap-6 grow ">
           <div className="sticky top-0 w-11/12 lg:w-4/5 min-h-250">
-            {templatePage === "minimalist" ? (
-              <MinimalistCurriculum />
-            ) : templatePage === "modern" ? (
-              <ModernCurriculum />
+            {SelectedTemplate ? (
+              <SelectedTemplate />
             ) : (
               <p>Seleccione una plantilla válida.</p>
             )}

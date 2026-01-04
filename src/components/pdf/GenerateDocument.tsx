@@ -416,44 +416,39 @@ const MinimalistDocument = React.memo(
   }
 );
 
+
+const TEMPLATE_DOCUMENTS = {
+  modern: ModernDocument,
+  minimalist: MinimalistDocument,
+};
+
+// Extraemos los nombres válidos automáticamente para TypeScript
+type TemplateName = keyof typeof TEMPLATE_DOCUMENTS;
+
 export default function GenerateDocument() {
   const { templatePage } = useTemplateContext();
   const { dataForm, checked } = useFormContext();
   const { fullName } = dataForm;
 
   const data = useMemo(() => dataForm, [dataForm]); // si dataForm cambia de referencia con frecuencia
+
+  //Dictionary Pattern
+  const SelectedDocument = TEMPLATE_DOCUMENTS[templatePage as TemplateName];
+
   return (
     <div>
-      {templatePage && templatePage === "modern" && (
-        <PDFDownloadLink
-          document={
-            <ModernDocument data={data} expValid={checked.checked} />}
-          fileName={`curriculum_${fullName}.pdf`}
-        >
-          <Button
-            type="button"
-            className="text-sm xl:text-lg font-normal border rounded-lg py-2.5 px-6 xl:px-10 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
-          >
-            Descargar
-          </Button>
-        </PDFDownloadLink>
-      )}
 
-      {templatePage && templatePage === "minimalist" && (
-        <PDFDownloadLink
-          document={
-            <MinimalistDocument data={data} expValid={checked.checked} />
-          }
-          fileName={`curriculum_${fullName}.pdf`}
+      <PDFDownloadLink
+        document={<SelectedDocument data={data} expValid={checked.checked} />}
+        fileName={`curriculum_${fullName}.pdf`}
+      >
+        <Button
+          type="button"
+          className="text-sm xl:text-lg font-normal border rounded-lg py-2.5 px-6 xl:px-10 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
         >
-          <Button
-            type="button"
-            className="text-sm xl:text-lg font-normal border rounded-lg py-2.5 px-6 xl:px-10 text-white bg-teal-800 hover:border-teal-950 hover:text-teal-950 hover:bg-teal-100"
-          >
-            Descargar
-          </Button>
-        </PDFDownloadLink>
-      )}
+          Descargar
+        </Button>
+      </PDFDownloadLink>
 
       {/* <PDFViewer style={{ width: "900px", height: "90vh" }}>
         <ModernDocument data={dataForm} />

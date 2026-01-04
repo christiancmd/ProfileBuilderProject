@@ -1,31 +1,54 @@
 import Button from "../Atoms/Button";
 import { useTemplateContext } from "../../../context/TemplateContext";
 
-export default function SectionButton() {
+type TemplateName = "modern" | "minimalist";
 
-  const { setTemplatePage } = useTemplateContext();
+interface TemplateOption {
+  id: number;
+  name: TemplateName;
+  description: string;
+}
+
+const TEMPLATE_OPTION: TemplateOption[] = [
+  {
+    id: 1,
+    name: "modern",
+    description: "Moderna (Bloques centrales)",
+  },
+  {
+    id: 2,
+    name: "minimalist",
+    description: "Minimalista (Dos columnas)",
+  }
+];
+
+export default function SectionButton() {
+  const { templatePage, setTemplatePage } = useTemplateContext();
 
   const handleTemplateChange = (template: string) => {
     setTemplatePage(template);
-  }
+  };
 
   return (
     <div className="flex flex-col xl:flex-row gap-6">
-      <Button
-        onClick={() => handleTemplateChange('modern')}
-        type="button"
-        className="font-medium border px-8 py-4 rounded-lg bg-gray-100 hover:bg-gray-500 focus:bg-gray-600 focus:text-white hover:text-gray-50"
-      >
-        Moderna (Bloques centrales)
-      </Button>
+      {TEMPLATE_OPTION.map((template) => {
+        const isActive = templatePage === template.name;
 
-        <Button
-        onClick={() => handleTemplateChange('minimalist')}
-        type="button"
-        className="font-medium border px-8 py-4 rounded-lg bg-gray-100 hover:bg-gray-500 focus:bg-gray-600 focus:text-white hover:text-gray-50"
-      >
-        Minimalista (Dos columnas)
-      </Button>
+        return (
+          <Button
+            key={template.id}
+            onClick={() => handleTemplateChange(template.name)}
+            type="button"
+            className={`font-medium border px-8 py-4 rounded-lg transition-all duration-200 ${
+              isActive
+                ? "bg-gray-600 text-white border-gray-700 shadow-md scale-105" // Estilo Activo
+                : "bg-gray-100 text-gray-900 hover:bg-gray-200 border-transparent" // Estilo Inactivo
+            }`}
+          >
+            {template.description}
+          </Button>
+        );
+      })}
     </div>
   );
 }
