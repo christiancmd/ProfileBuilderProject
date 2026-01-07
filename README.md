@@ -21,7 +21,7 @@ Principales objetivos
 
 Proyecto — ¿qué incluye?
 - Formulario dinámico con múltiples entradas (experiencia, educación, skills).
-- Previsualización en dos plantillas (`Minimalist` y `Modern`).
+- Previsualización en tres plantillas (`Minimalista` , `Moderno` y `Clasico`).
 - Generación de PDF con `@react-pdf/renderer`.
 
 Tecnologías y versiones
@@ -59,9 +59,6 @@ pnpm install
 # arrancar en modo desarrollo
 pnpm dev
 
-# construir para producción
-pnpm build
-pnpm preview
 ```
 
 La app quedará disponible en `http://localhost:5173`.
