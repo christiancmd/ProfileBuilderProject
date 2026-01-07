@@ -2,6 +2,8 @@ import React from "react";
 import { useFormContext } from "../context/FormContext";
 import { useState, useEffect } from "react";
 
+import defaultImg from "../assets/image/defaultImg.webp";
+
 interface ExperienceEntry {
   id: number;
   position: string;
@@ -36,9 +38,7 @@ interface PrincipalDataEntry {
 }
 
 const MinimalistCurriculum: React.FC = () => {
-  const [previewUrl, setPreviewUrl] = useState<string>(
-    "/src/assets/image/defaultImg.webp"
-  );
+  const [previewUrl, setPreviewUrl] = useState<string>(defaultImg);
 
   const { dataForm, checked } = useFormContext();
   const {
@@ -58,7 +58,8 @@ const MinimalistCurriculum: React.FC = () => {
 
   useEffect(() => {
     if (!profileImage) {
-      setPreviewUrl("/src/assets/image/defaultImg.webp");
+      // 3. USA LA IMAGEN IMPORTADA AQUÍ TAMBIÉN
+      setPreviewUrl(defaultImg);
       return;
     }
     const url = URL.createObjectURL(profileImage);
@@ -139,7 +140,6 @@ const MinimalistCurriculum: React.FC = () => {
 };
 
 const hasPrincipalData = ({ fullName, title, summary }: PrincipalDataEntry) => {
-
   const DEFAULTS = {
     fullName: "CHRISTIAN PARISCA",
     title: "Ingeniero De Sistemas & Desarrollador Full Stack",
@@ -159,16 +159,14 @@ const hasPrincipalData = ({ fullName, title, summary }: PrincipalDataEntry) => {
           {fullName || DEFAULTS.fullName}
         </h1>
         <h2 className="text-xl font-medium text-gray-900/70 inline-block">
-          {(title && title.trim()) ||
-            DEFAULTS.title}
+          {(title && title.trim()) || DEFAULTS.title}
         </h2>
       </div>
       <h3 className="text-xl font-bold text-gray-800/90 mb-3 border-b-2 border-gray-300 pb-1 tracking-widest uppercase">
         Perfil Profesional
       </h3>
       <p className="text-[0.95em] text-gray-700 leading-relaxed">
-        {(summary && summary.trim()) ||
-          DEFAULTS.summary}
+        {(summary && summary.trim()) || DEFAULTS.summary}
       </p>
     </>
   );
@@ -232,7 +230,7 @@ const hasEducation = (educations: EducationEntry[]) => {
     },
   ];
 
-    // Verificamos si hay al menos un estudio que tenga información real
+  // Verificamos si hay al menos un estudio que tenga información real
   const hasRealContent = educations?.some(
     (exp) => exp.degree?.trim() !== "" || exp.institution?.trim() !== ""
   );
@@ -317,14 +315,13 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
     },
   ];
 
-    // Verificamos si hay al menos un estudio que tenga información real
+  // Verificamos si hay al menos un estudio que tenga información real
   const hasRealContent = experiences?.some(
     (exp) => exp.position?.trim() !== "" || exp.company?.trim() !== ""
   );
 
   // Si no hay contenido real, usamos el DEFAULT
   const hasExpToRender = hasRealContent ? experiences : DEFAULT_EXPERIENCE;
-  
 
   return (
     <>
@@ -336,7 +333,7 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
                 {position || "Arquitecto de Soluciones Senior"}
               </h4>
               <span className="text-sm font-semibold text-gray-500">
-                {expFrom || "Ene 2024" } - {expTo || "Presente"}
+                {expFrom || "Ene 2024"} - {expTo || "Presente"}
               </span>
             </div>
 
