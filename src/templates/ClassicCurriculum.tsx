@@ -130,14 +130,14 @@ const hasPrincipalData = (principalData: PrincipalDataEntry) => {
         <h1 className="text-2xl md:text-3xl font-extrabold  text-black/80  tracking-wide  uppercase leading-tight">
           {fullName || DEFAULTS.fullName}
         </h1>
-        <h2 className="text-lg md:text-xl  font-light text-gray-900/80 tracking-wide">
+        <h2 className="text-lg md:text-xl font-medium text-gray-900/70 tracking-wide">
           {title || DEFAULTS.title}
         </h2>
       </div>
 
       <div className="flex justify-center items-center text-sm text-center text-gray-600 flex-col md:flex-row  gap-1 md:gap-3 ">
         <div className="flex items-center space-x-2">
-          <span className="font-medium">{location || DEFAULTS.location}</span>
+          <span>{location || DEFAULTS.location}</span>
         </div>   
         <div className="flex items-center">
           <span>{email || DEFAULTS.email}</span>
@@ -172,7 +172,7 @@ const hasEducation = (educations: EducationEntry[]) => {
 
   // Verificamos si hay al menos un estudio que tenga información real
   const hasRealContent = educations?.some(
-    (edu) => edu.degree?.trim() !== "" || edu.institution?.trim() !== ""
+    (educ) => educ.degree?.trim() !== "" || educ.institution?.trim() !== ""
   );
 
   // Si no hay contenido real, usamos el DEFAULT
@@ -184,10 +184,10 @@ const hasEducation = (educations: EducationEntry[]) => {
         <div key={id} className="mb-2">
           <div className="flex justify-between items-baseline">
             <h3 className="text-sm md:text-md font-semibold text-gray-700">
-              {degree || "Grado en Ingeniería Informática"}
+            {degree || "Grado en Ingeniería Informática"}
             </h3>
             <span className="text-sm font-semibold text-gray-500">
-              {eduFrom || "May 2013"} - {eduTo || "Jun 2017"}
+            {eduFrom || "May 2013"} - {eduTo || "Jun 2017"}
             </span>
           </div>
 
@@ -227,7 +227,7 @@ const hasSkills = (skills: SkillsEntry[]) => {
           <span className="font-semibold text-gray-700">
             {skill.skillTitle || "Sin título"}:{" "}
           </span>
-          {skill.skillDetail || "Sin detalle"}.{" "}
+          {skill.skillDetail || "Sin detalle"}
         </p>
       ))}
     </div>
@@ -306,14 +306,16 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
         ({ id, position, company, expFrom, expTo, details }) => (
           <div key={id.toLocaleString()} className="mb-2">
             <div className="flex justify-between items-start">
-              <h4 className="text-lg font-bold text-gray-700">{position || "Arquitecto de Soluciones Senior"}</h4>
+              <h4 className="text-lg font-bold text-gray-700">
+                {position || "Arquitecto de Soluciones Senior"}
+                </h4>
               <span className="text-sm font-semibold text-gray-500">
-                {expFrom || "2024"} - {expTo || "Presente"}
+                {expFrom || "Ene 2024" } - {expTo || "Presente"}
               </span>
             </div>
 
             <p className="text-md font-semibold text-gray-600 mb-1">
-              {company || "TecnoPanathon"}
+              {company || "Tech Solutions S.L. | Barcelona"}
             </p>
 
             {details && details.length > 0 && (

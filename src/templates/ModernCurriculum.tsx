@@ -38,8 +38,7 @@ interface LanguageEntry {
 }
 
 export const ModernCurriculum: React.FC = () => {
-  const { dataForm } = useFormContext();
-  const { checked } = useFormContext();
+  const { dataForm, checked } = useFormContext();
   const {
     fullName,
     title,
@@ -141,7 +140,7 @@ const hasPrincipalData = ({
       <h1 className="text-4xl font-extrabold text-black/80 uppercase tracking-wider">
         {fullName || DEFAULTS.fullName}
       </h1>
-      <h2 className="text-xl font-light text-gray-900/80">
+      <h2 className="text-xl font-medium text-gray-900/70">
         {title || DEFAULTS.title}
       </h2>
       <div className="flex justify-center flex-wrap gap-x-5 gap-y-1 text-sm text-gray-600">
@@ -202,7 +201,7 @@ const hasSkills = (skills: SkillsEntry[]) => {
 };
 
 const hasEducation = (educations: EducationEntry[]) => {
-  const DEFAULT_EDUCATION = [
+  const DEFAULT_EDUCATION = [ //info de default
     {
       id: "default",
       degree: "Grado en Ingeniería Informática",
@@ -212,9 +211,13 @@ const hasEducation = (educations: EducationEntry[]) => {
     },
   ];
 
-  const educationToRender =
-    educations && educations.length > 0 ? educations : DEFAULT_EDUCATION;
+    const hasRealContent = educations?.some(
+    (educ) => educ.degree?.trim() !== "" || educ.institution?.trim() !== ""
+  );
 
+  // Si no hay contenido real, usamos el DEFAULT
+  const educationToRender = hasRealContent ? educations : DEFAULT_EDUCATION;
+  
   return (
     <>
       {educationToRender.map(({ id, degree, institution, eduFrom, eduTo }) => (
@@ -292,8 +295,13 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
     },
   ];
 
-  const hasExpToRender =
-    experiences && experiences.length > 0 ? experiences : DEFAULT_EXPERIENCE;
+    // Verificamos si hay al menos un estudio que tenga información real
+  const hasRealContent = experiences?.some(
+    (exp) => exp.position?.trim() !== "" || exp.company?.trim() !== "" 
+  );
+
+  // Si no hay contenido real, usamos el DEFAULT
+  const hasExpToRender = hasRealContent ? experiences : DEFAULT_EXPERIENCE;
 
   return (
     <>
@@ -305,12 +313,12 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
                 {position || "Arquitecto de Soluciones Senior"}
               </h4>
               <span className="text-sm font-semibold text-gray-500">
-                {expFrom || "2024"} - {expTo || "Presente"}
+                {expFrom || "2024" } - {expTo || "Presente"}
               </span>
             </div>
 
             <p className="text-md font-semibold text-gray-600 mb-1">
-              {company || "TecnoPanathon"}
+              {company || "Tech Solutions S.L. | Barcelona"}
             </p>
 
             {details && details.length > 0 && (

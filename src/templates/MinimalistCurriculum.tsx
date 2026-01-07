@@ -158,7 +158,7 @@ const hasPrincipalData = ({ fullName, title, summary }: PrincipalDataEntry) => {
         <h1 className="text-3xl text-black/80 font-bold uppercase tracking-wide">
           {fullName || DEFAULTS.fullName}
         </h1>
-        <h2 className="text-xl font-light text-gray-900/80 inline-block">
+        <h2 className="text-xl font-medium text-gray-900/70 inline-block">
           {(title && title.trim()) ||
             DEFAULTS.title}
         </h2>
@@ -232,8 +232,13 @@ const hasEducation = (educations: EducationEntry[]) => {
     },
   ];
 
-  const educationToRender =
-    educations && educations.length > 0 ? educations : DEFAULT_EDUCATION;
+    // Verificamos si hay al menos un estudio que tenga información real
+  const hasRealContent = educations?.some(
+    (exp) => exp.degree?.trim() !== "" || exp.institution?.trim() !== ""
+  );
+
+  // Si no hay contenido real, usamos el DEFAULT
+  const educationToRender = hasRealContent ? educations : DEFAULT_EDUCATION;
 
   return (
     <>
@@ -312,8 +317,14 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
     },
   ];
 
-  const hasExpToRender =
-    experiences && experiences.length > 0 ? experiences : DEFAULT_EXPERIENCE;
+    // Verificamos si hay al menos un estudio que tenga información real
+  const hasRealContent = experiences?.some(
+    (exp) => exp.position?.trim() !== "" || exp.company?.trim() !== ""
+  );
+
+  // Si no hay contenido real, usamos el DEFAULT
+  const hasExpToRender = hasRealContent ? experiences : DEFAULT_EXPERIENCE;
+  
 
   return (
     <>
@@ -325,12 +336,12 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
                 {position || "Arquitecto de Soluciones Senior"}
               </h4>
               <span className="text-sm font-semibold text-gray-500">
-                {expFrom || "2024"} - {expTo || "Presente"}
+                {expFrom || "Ene 2024" } - {expTo || "Presente"}
               </span>
             </div>
 
             <p className="text-md font-semibold text-gray-600 mb-1">
-              {company || "TecnoPanathon"}
+              {company || "Tech Solutions S.L. | Barcelona"}
             </p>
 
             {details && details.length > 0 && (

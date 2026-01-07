@@ -82,7 +82,7 @@ export const MinimalistStyles = StyleSheet.create({
   title: {
     fontSize: 14,
     color: "#4B5563",
-    marginTop: 8,
+    marginTop: 4,
     marginBottom: 10,
   },
   sectionTitle: {
