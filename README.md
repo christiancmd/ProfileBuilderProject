@@ -34,8 +34,10 @@ Tecnologías y versiones
 | Tipado | `typescript` | ~5.9.3 |
 | PDF | `@react-pdf/renderer` | ^4.3.1 |
 | Styling | `tailwindcss` | ^4.1.17 |
+| Notifications | `react-hot-toast` | ^2.6.0 |
+| Icons | `lucide-react` | ^0.562.0 |
 
-> Nota: la lista completa y versiones están en `package.json`.
+Nota: la lista completa y versiones están en `package.json`.
 
 Instalación rápida
 ------------------
