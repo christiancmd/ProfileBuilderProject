@@ -283,7 +283,23 @@ export default function PersonalAside() {
             />
           </div>
 
-          {templatePage && templatePage === "minimalist" && (
+          {templatePage && templatePage ==="classic" && (
+            <div>
+              <Label htmlFor="webLink">Sitio web / Linkedin</Label>
+              <Input
+                id="webLink"
+                name="webLink"
+                type="text"
+                value={dataForm.webLink}
+                onChange={DataHandleChange}
+                maxLength={90}
+                placeholder="www.web.com / Linkedi"
+
+              ></Input>
+            </div>
+          )}
+
+          {templatePage && templatePage ===  "minimalist" && (
             <div>
               <Label htmlFor="profileImage">Imagen (Perfil)</Label>
               <Input
@@ -476,7 +492,8 @@ export default function PersonalAside() {
 
         {/* --------------Sección de Idiomas ------------------*/}
 
-        <section className="pt-4 border-t">
+        {templatePage !== 'classic' &&(
+          <section className="pt-4 border-t">
           <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
             Idioma
           </h3>
@@ -510,6 +527,7 @@ export default function PersonalAside() {
             </div>
           </div>
         </section>
+        ) }
 
         {/* --------------Sección de Experiencia ------------------*/}
 

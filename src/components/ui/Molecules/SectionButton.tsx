@@ -1,7 +1,7 @@
 import Button from "../Atoms/Button";
 import { useTemplateContext } from "../../../context/TemplateContext";
 
-type TemplateName = "modern" | "minimalist";
+type TemplateName = "modern" | "minimalist" | "classic";
 
 interface TemplateOption {
   id: number;
@@ -19,6 +19,11 @@ const TEMPLATE_OPTION: TemplateOption[] = [
     id: 2,
     name: "minimalist",
     description: "Minimalista (Dos columnas)",
+  },
+  {
+    id: 3,
+    name: "classic",
+    description: "Clásica (Encabezado destacado)",
   }
 ];
 

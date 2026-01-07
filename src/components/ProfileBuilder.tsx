@@ -2,11 +2,13 @@ import ProfileHeader from "./ui/Molecules/ProfileHeader";
 import PersonalAside from "./PersonalAside";
 import MinimalistCurriculum from "../templates/MinimalistCurriculum";
 import ModernCurriculum from "../templates/ModernCurriculum";
+import ClassicCurriculum from "../templates/ClassicCurriculum";
 import { useTemplateContext } from "../context/TemplateContext";
 
 const TEMPLATE_COMPONENTS = {
   modern: ModernCurriculum,
   minimalist: MinimalistCurriculum,
+  classic: ClassicCurriculum,
 };
 
 // Extraemos los nombres válidos automáticamente para TypeScript

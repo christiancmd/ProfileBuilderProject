@@ -32,7 +32,8 @@ interface FormData {
   fullName: string;
   title: string;
   summary: string;
-  profileImage: File | null;
+  profileImage?: File | null;
+  webLink?: string; 
   phone: string;
   email: string;
   location: string;
@@ -75,6 +76,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     title: "",
     summary: "",
     profileImage: null,
+    webLink: "",
     phone: "",
     email: "",
     location: "",
