@@ -10,6 +10,15 @@ interface ExperienceEntry {
   details: string[];
 }
 
+interface NotExperienceEntry{
+  personalRol?: string;
+  personalTitle?: string;
+  personalFrom?: string;
+  personalTo?: string;
+  personalInfo?: string;
+}
+
+
 interface EducationEntry {
   id: number;
   degree: string;
@@ -84,7 +93,7 @@ export const ModernCurriculum: React.FC = () => {
             {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
           </h3>
 
-          {checked.checked ? hasExperience(experiences) : hasNotExperience()}
+          {checked.checked ? hasExperience(experiences) : hasNotExperience(dataForm)}
         </section>
 
         <div className="md:col-span-1 space-y-6 ">
@@ -237,8 +246,7 @@ const hasEducation = (educations: EducationEntry[]) => {
   );
 };
 
-const hasNotExperience = () => {
-  const { dataForm } = useFormContext();
+const hasNotExperience = (dataForm: NotExperienceEntry) => {
   const { personalTitle, personalRol, personalFrom, personalTo, personalInfo } =
     dataForm;
 

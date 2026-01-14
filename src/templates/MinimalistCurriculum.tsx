@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext } from "../context/FormContext";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import defaultImg from "../assets/image/defaultImg.webp";
 
@@ -11,6 +11,14 @@ interface ExperienceEntry {
   expFrom: string;
   expTo: string;
   details: string[];
+}
+
+interface NotExperienceEntry{
+  personalRol?: string;
+  personalTitle?: string;
+  personalFrom?: string;
+  personalTo?: string;
+  personalInfo?: string;
 }
 
 interface EducationEntry {
@@ -38,7 +46,6 @@ interface PrincipalDataEntry {
 }
 
 const MinimalistCurriculum: React.FC = () => {
-  const [previewUrl, setPreviewUrl] = useState<string>(defaultImg);
 
   const { dataForm, checked } = useFormContext();
   const {
@@ -56,18 +63,21 @@ const MinimalistCurriculum: React.FC = () => {
     skills,
   } = dataForm;
 
-  useEffect(() => {
-    if (!profileImage) {
-      // 3. USA LA IMAGEN IMPORTADA AQUÍ TAMBIÉN
-      setPreviewUrl(defaultImg);
-      return;
+
+const previewUrl = useMemo(() => {
+  if (!profileImage) return defaultImg;
+  
+  const url = URL.createObjectURL(profileImage);
+  return url;
+}, [profileImage]);
+
+useEffect(() => {
+  return () => {
+    if (previewUrl && previewUrl !== defaultImg) {
+      URL.revokeObjectURL(previewUrl);
     }
-    const url = URL.createObjectURL(profileImage);
-    setPreviewUrl(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [profileImage]);
+  };
+}, [previewUrl]);
 
   return (
     <div className="relative bg-gray-900 flex flex-col md:flex-row max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
@@ -124,7 +134,7 @@ const MinimalistCurriculum: React.FC = () => {
             {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
           </h3>
 
-          {checked.checked ? hasExperience(experiences) : hasNotExperience()}
+          {checked.checked ? hasExperience(experiences) : hasNotExperience(dataForm)}
         </section>
 
         <section>
@@ -257,8 +267,7 @@ const hasEducation = (educations: EducationEntry[]) => {
   );
 };
 
-const hasNotExperience = () => {
-  const { dataForm } = useFormContext();
+const hasNotExperience = (dataForm: NotExperienceEntry) => {
   const { personalTitle, personalRol, personalFrom, personalTo, personalInfo } =
     dataForm;
 
