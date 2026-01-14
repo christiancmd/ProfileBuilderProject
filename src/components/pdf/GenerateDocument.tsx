@@ -301,7 +301,7 @@ const MinimalistDocument = React.memo(
                         {edu.institution || "Institución no especificada"}
                       </Text>
                       <Text style={styles.asideText}>
-                        {(edu.eduFrom || "") + (` - ${edu.eduTo}` || "")}
+                        {(edu.eduFrom || "") + (' - ') + ( edu.eduTo || "")}
                       </Text>
                     </View>
                   ))

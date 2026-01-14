@@ -3,7 +3,7 @@ import Textarea from "./ui/Atoms/Textarea";
 import Input from "./ui/Atoms/Input";
 import { useFormContext } from "../context/FormContext";
 import { useTemplateContext } from "../context/TemplateContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
 interface EducationEntry {
@@ -74,9 +74,11 @@ export default function PersonalAside() {
     });
   };
 
+  
+
   const [educations, setEducations] = useState<EducationEntry[]>([
     {
-      id: Date.now(), // Usamos Date.now() como un id inicial simple
+      id: 1, // id inicial constante para evitar llamadas impuras en render
       degree: "",
       institution: "",
       eduFrom: "",
@@ -86,7 +88,7 @@ export default function PersonalAside() {
 
   const [experiences, setExperiences] = useState<ExperienceEntry[]>([
     {
-      id: Date.now(),
+      id: 1,
       position: "",
       company: "",
       expFrom: "",
@@ -94,6 +96,9 @@ export default function PersonalAside() {
       details: ["", "", ""],
     },
   ]);
+
+  // Contador local para generar ids numéricos únicos sin llamar funciones impuras durante el render
+  const nextId = useRef<number>(3);
 
   useEffect(() => {
     DataHandleChange(educations, "educations");
@@ -155,9 +160,9 @@ export default function PersonalAside() {
   const addEducation = () => {
     // 4. Límite de 3: Solo agrega si hay menos de 3
     if (educations.length < 3) {
-      const newId = Date.now() + Math.random(); // Generar un ID único
-      setEducations([
-        ...educations,
+      const newId = nextId.current++;
+      setEducations((prev) => [
+        ...prev,
         {
           id: newId,
           degree: "",
@@ -174,7 +179,7 @@ export default function PersonalAside() {
   // Funciones para experiencias
   const addExperience = () => {
     if (experiences.length < 2) {
-      const newId = Date.now() + Math.random();
+      const newId = nextId.current++;
       setExperiences((prev) => [
         ...prev,
         {
