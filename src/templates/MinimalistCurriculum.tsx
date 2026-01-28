@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormContext } from "../context/FormContext";
 import { useEffect, useMemo } from "react";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 import defaultImg from "../assets/image/defaultImg.webp";
 
@@ -13,7 +14,7 @@ interface ExperienceEntry {
   details: string[];
 }
 
-interface NotExperienceEntry{
+interface NotExperienceEntry {
   personalRol?: string;
   personalTitle?: string;
   personalFrom?: string;
@@ -39,6 +40,11 @@ interface LanguageEntry {
   secundaryLanguage: string;
 }
 
+interface ReferencesEntry{
+  primaryReference?: string;
+  secundaryReference?: string;
+}
+
 interface PrincipalDataEntry {
   fullName: string;
   title: string;
@@ -46,8 +52,12 @@ interface PrincipalDataEntry {
 }
 
 const MinimalistCurriculum: React.FC = () => {
-
   const { dataForm, checked } = useFormContext();
+  useEffect(() => {
+    console.log(dataForm);
+    
+  }, [dataForm])
+  
   const {
     fullName,
     title,
@@ -58,26 +68,27 @@ const MinimalistCurriculum: React.FC = () => {
     location,
     primaryLanguage,
     secundaryLanguage,
+    primaryReference,
+    secundaryReference,
     educations,
     experiences,
     skills,
   } = dataForm;
 
+  const previewUrl = useMemo(() => {
+    if (!profileImage) return defaultImg;
 
-const previewUrl = useMemo(() => {
-  if (!profileImage) return defaultImg;
-  
-  const url = URL.createObjectURL(profileImage);
-  return url;
-}, [profileImage]);
+    const url = URL.createObjectURL(profileImage);
+    return url;
+  }, [profileImage]);
 
-useEffect(() => {
-  return () => {
-    if (previewUrl && previewUrl !== defaultImg) {
-      URL.revokeObjectURL(previewUrl);
-    }
-  };
-}, [previewUrl]);
+  useEffect(() => {
+    return () => {
+      if (previewUrl && previewUrl !== defaultImg) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <div className="relative bg-gray-900 flex flex-col md:flex-row max-w-5xl mx-auto shadow-2xl min-h-screen font-sans items-stretch">
@@ -96,12 +107,21 @@ useEffect(() => {
           <h3 className="text-xl font-bold mb-4 border-b border-white pb-1 tracking-widest">
             CONTACTO
           </h3>
-          <div className="text-md text-gray-10 space-y-1">
-            <p>{phone && phone.trim() ? phone : "+34 688 555 123"}</p>
-            <p>{email && email.trim() ? email : "example@devmail.com"}</p>
-            <p>
-              {location && location.trim() ? location : "Barcelona, España"}
-            </p>
+          <div className="text-[15px] text-gray-10 space-y-3">
+            <div className="flex items-center gap-2">
+              <Phone size={18} className="shrink-0" />
+              <p>{phone && phone.trim() ? phone : "+34 688 555 123"}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Mail size={18} className="shrink-0" />
+              <p>{email && email.trim() ? email : "example@devmail.com"}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <MapPin size={18} className="shrink-0" />
+              <p>{location && location.trim() ? location : "Barcelona, España"}</p>
+            </div>
           </div>
         </section>
 
@@ -121,6 +141,16 @@ useEffect(() => {
 
             {hasLanguage({ primaryLanguage, secundaryLanguage })}
           </section>
+
+          <section>
+
+            <h3 className="text-xl font-bold border-b-2 border-gray-300 pb-1 mb-4 text-white uppercase tracking-wider">
+              Referencias
+            </h3>
+
+            {hasReferences({primaryReference, secundaryReference})}
+
+          </section>
         </div>
       </aside>
 
@@ -134,7 +164,9 @@ useEffect(() => {
             {checked.checked ? "Experiencia Laboral" : "Experiencia Personal"}
           </h3>
 
-          {checked.checked ? hasExperience(experiences) : hasNotExperience(dataForm)}
+          {checked.checked
+            ? hasExperience(experiences)
+            : hasNotExperience(dataForm)}
         </section>
 
         <section>
@@ -196,6 +228,27 @@ const hasLanguage = ({ primaryLanguage, secundaryLanguage }: LanguageEntry) => {
   );
 };
 
+const hasReferences = ({primaryReference, secundaryReference}:ReferencesEntry ) => {
+  const DEFAULTS = {
+    primaryReference: "Christian Parisca: 04142961677",
+    secundaryReference: "Yefren Sanchez: 04142961677",
+  };
+   
+  return (
+  <ul className="flex flex-col text-base text-gray-200 space-y-3 pr-4">
+    {/* Primera Referencia */}
+    <li className="flex flex-col">
+      <span className="font-medium">{primaryReference || DEFAULTS.primaryReference}</span>
+    </li>
+    
+    {/* Segunda Referencia */}
+    <li className="flex flex-col">
+      <span className="font-medium">{secundaryReference || DEFAULTS.secundaryReference}</span>
+    </li>
+  </ul>
+);
+}
+
 const hasSkills = (skills: SkillsEntry[]) => {
   const DEFAULT_SKILLS = [
     {
@@ -242,7 +295,7 @@ const hasEducation = (educations: EducationEntry[]) => {
 
   // Verificamos si hay al menos un estudio que tenga información real
   const hasRealContent = educations?.some(
-    (exp) => exp.degree?.trim() !== "" || exp.institution?.trim() !== ""
+    (exp) => exp.degree?.trim() !== "" || exp.institution?.trim() !== "",
   );
 
   // Si no hay contenido real, usamos el DEFAULT
@@ -326,7 +379,7 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
 
   // Verificamos si hay al menos un estudio que tenga información real
   const hasRealContent = experiences?.some(
-    (exp) => exp.position?.trim() !== "" || exp.company?.trim() !== ""
+    (exp) => exp.position?.trim() !== "" || exp.company?.trim() !== "",
   );
 
   // Si no hay contenido real, usamos el DEFAULT
@@ -362,7 +415,7 @@ const hasExperience = (experiences: ExperienceEntry[]) => {
 
             <div className="mt-4"></div>
           </div>
-        )
+        ),
       )}
     </>
   );

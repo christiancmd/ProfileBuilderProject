@@ -13,10 +13,11 @@ export const MinimalistStyles = StyleSheet.create({
   },
   // --- COLUMNA IZQUIERDA (OSCURA) ---
   aside: {
-    width: "30%",
+    width: "35%",
     backgroundColor: "#111827",
     color: "#FFFFFF",
-    padding: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
     height: "100%",
   },
   asideProfileImageWrap: {
@@ -36,7 +37,7 @@ export const MinimalistStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#FFFFFF",
     paddingBottom: 3,
-    marginTop: 25,
+    marginTop: 15,
     marginBottom: 10,
   },
 
@@ -52,6 +53,7 @@ export const MinimalistStyles = StyleSheet.create({
     marginBottom: 3,
     lineHeight: 1.4,
     color: "#ced0d3",
+    paddingRight: 10,
   },
   asideEducationTitle: {
     fontSize: 9,

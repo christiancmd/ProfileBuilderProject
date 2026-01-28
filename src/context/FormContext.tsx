@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import type { ChangeEvent } from "react";
 
 interface HandleCheckboxEvent {
@@ -39,6 +39,9 @@ interface FormData {
   location: string;
   primaryLanguage: string;
   secundaryLanguage: string;
+  //
+  primaryReference?: string;
+  secundaryReference?: string;
   // Campos para la variante "sin experiencia laboral" (experiencias personales)
   personalRol?: string;
   personalTitle?: string;
@@ -82,6 +85,8 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     location: "",
     primaryLanguage: "",
     secundaryLanguage: "",
+    primaryReference: "",
+    secundaryReference: "",
     personalRol: "",
     personalTitle: "",
     personalFrom: "",
@@ -156,6 +161,12 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     },
     []
   );
+
+  useEffect(() => {
+    console.log(dataForm);
+    
+  }, [dataForm])
+  
 
   const contextValue = {
     dataForm,

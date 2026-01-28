@@ -5,6 +5,10 @@ import {
   Document,
   PDFDownloadLink,
   Image,
+  Svg,
+  Path,
+  Rect,
+  Circle,
   //PDFViewer,
 } from "@react-pdf/renderer";
 import { MinimalistStyles, ModernStyles, ClassicStyles } from "./DocStyles";
@@ -45,6 +49,10 @@ interface FormData {
   location: string;
   primaryLanguage: string;
   secundaryLanguage: string;
+  //
+  primaryReference?: string;
+  secundaryReference?: string;
+
   // Campos para la variante "sin experiencia laboral" (experiencias personales)
   personalRol?: string;
   personalTitle?: string;
@@ -137,7 +145,7 @@ const ModernDocument = React.memo(
                                   .replace(/\r?\n|\r/g, " ")}
                               </Text>
                             </View>
-                          ) : null
+                          ) : null,
                         )}
                     </View>
                   ))}
@@ -230,7 +238,51 @@ const ModernDocument = React.memo(
         </Page>
       </Document>
     );
-  }
+  },
+);
+
+const PhoneIcon = () => (
+  <Svg width="12" height="12" viewBox="0 0 24 24" style={{ marginRight: 5, marginBottom: 6 }}>
+    <Path
+      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+      stroke="white"
+      strokeWidth="2"
+      fill="none"
+    />
+  </Svg>
+);
+
+const MailIcon = () => (
+  <Svg width="10" height="10" viewBox="0 0 24 24" style={{ marginRight: 5, marginBottom: 6 }}>
+    <Rect
+      x="2"
+      y="4"
+      width="20"
+      height="16"
+      rx="2"
+      stroke="white"
+      strokeWidth="2"
+      fill="none"
+    />
+    <Path
+      d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+      stroke="white"
+      strokeWidth="2"
+      fill="none"
+    />
+  </Svg>
+);
+
+const MapPinIcon = () => (
+  <Svg width="10" height="10" viewBox="0 0 24 24" style={{ marginRight: 5, marginBottom: 6 }}>
+    <Path
+      d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
+      stroke="white"
+      strokeWidth="2"
+      fill="none"
+    />
+    <Circle cx="12" cy="10" r="3" stroke="white" strokeWidth="2" fill="none" />
+  </Svg>
 );
 
 const MinimalistDocument = React.memo(
@@ -249,6 +301,8 @@ const MinimalistDocument = React.memo(
       profileImage,
       primaryLanguage,
       secundaryLanguage,
+      primaryReference,
+      secundaryReference,
       personalTitle,
       personalRol,
       personalFrom,
@@ -280,13 +334,49 @@ const MinimalistDocument = React.memo(
               {imageSrc && (
                 <Image src={imageSrc} style={styles.asideProfileImageWrap} />
               )}
+
               <View>
                 <Text style={styles.asideSectionTitle}>Contacto</Text>
-                <Text style={styles.asideText}>+{phone || "Teléfono"}</Text>
-                <Text style={styles.asideText}>
-                  {email || " correo@ejemplo.com"}
-                </Text>
-                <Text style={styles.asideText}>{location || "Localidad"}</Text>
+
+                {/* Teléfono */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 4,
+                  }}
+                >
+                  <PhoneIcon />
+                  <Text style={styles.asideText}>{phone || "Teléfono"}</Text>
+                </View>
+
+                {/* Email */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 4,
+                  }}
+                >
+                  <MailIcon />
+                  <Text style={styles.asideText}>
+                    {email || "correo@ejemplo.com"}
+                  </Text>
+                </View>
+
+                {/* Ubicación */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 4,
+                  }}
+                >
+                  <MapPinIcon />
+                  <Text style={styles.asideText}>
+                    {location || "Localidad"}
+                  </Text>
+                </View>
               </View>
 
               <View>
@@ -301,7 +391,7 @@ const MinimalistDocument = React.memo(
                         {edu.institution || "Institución no especificada"}
                       </Text>
                       <Text style={styles.asideText}>
-                        {(edu.eduFrom || "") + (' - ') + ( edu.eduTo || "")}
+                        {(edu.eduFrom || "") + " - " + (edu.eduTo || "")}
                       </Text>
                     </View>
                   ))
@@ -319,6 +409,16 @@ const MinimalistDocument = React.memo(
                 </Text>
                 <Text style={styles.asideText}>
                   {secundaryLanguage || "Idiomas no especificados"}
+                </Text>
+              </View>
+
+              <View>
+                <Text style={styles.asideSectionTitle}>Referencias</Text>
+                <Text style={[styles.asideText, {paddingRight: 30, paddingTop: 5}]}>
+                  - {primaryReference || "Referencia no especificada"}
+                </Text>
+                <Text style={[styles.asideText, {paddingRight: 30, paddingTop: 5}]}>
+                  - {secundaryReference || "Referencia no especificada"}
                 </Text>
               </View>
             </View>
@@ -363,7 +463,7 @@ const MinimalistDocument = React.memo(
                                   .toString()
                                   .replace(/\r?\n|\r/g, " ")}
                               </Text>
-                            ) : null
+                            ) : null,
                           )}
                       </View>
                     ))
@@ -428,7 +528,7 @@ const MinimalistDocument = React.memo(
         </Page>
       </Document>
     );
-  }
+  },
 );
 
 const ClassicDocument = React.memo(
@@ -513,7 +613,7 @@ const ClassicDocument = React.memo(
                                 .replace(/\r?\n|\r/g, " ")}
                             </Text>
                           </View>
-                        ) : null
+                        ) : null,
                       )}
                     </View>
                   )}
@@ -587,7 +687,7 @@ const ClassicDocument = React.memo(
         </Page>
       </Document>
     );
-  }
+  },
 );
 
 const TEMPLATE_DOCUMENTS = {
@@ -624,7 +724,7 @@ export default function GenerateDocument() {
       </PDFDownloadLink>
 
       {/* <PDFViewer style={{ width: "900px", height: "90vh" }}>
-        <ModernDocument data={dataForm} expValid={checked.checked} />
+        <MinimalistDocument data={dataForm} expValid={checked.checked} />
       </PDFViewer> */}
     </div>
   );

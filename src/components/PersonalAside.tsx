@@ -52,7 +52,7 @@ export default function PersonalAside() {
     const nonEmpty = skills.filter(
       (s) =>
         (s.skillTitle && s.skillTitle.trim() !== "") ||
-        (s.skillDetail && s.skillDetail.trim() !== "")
+        (s.skillDetail && s.skillDetail.trim() !== ""),
     );
     if (nonEmpty.length > 0) {
       DataHandleChange(nonEmpty, "skills");
@@ -64,7 +64,7 @@ export default function PersonalAside() {
   const updateSkill = (
     index: number,
     field: keyof SkillsEntry,
-    value: string
+    value: string,
   ) => {
     setSkills((prev) => {
       const next = [...prev];
@@ -73,8 +73,6 @@ export default function PersonalAside() {
       return next;
     });
   };
-
-  
 
   const [educations, setEducations] = useState<EducationEntry[]>([
     {
@@ -112,7 +110,7 @@ export default function PersonalAside() {
   const handleInputChange = (
     id: number,
     field: keyof EducationEntry, // 'degree', 'institution', etc.
-    value: string
+    value: string,
   ) => {
     setEducations((prevEducations) =>
       prevEducations.map((edu) =>
@@ -121,8 +119,8 @@ export default function PersonalAside() {
               ...edu,
               [field]: value, // Actualiza el campo específico
             }
-          : edu
-      )
+          : edu,
+      ),
     );
   };
 
@@ -130,7 +128,7 @@ export default function PersonalAside() {
   const expHandleInputChange = (
     id: number,
     field: Exclude<keyof ExperienceEntry, "details">, // excluding details
-    value: string
+    value: string,
   ) => {
     setExperiences((prevExperiences) =>
       prevExperiences.map((exp) =>
@@ -139,8 +137,8 @@ export default function PersonalAside() {
               ...exp,
               [field]: value, // Actualiza el campo específico
             }
-          : exp
-      )
+          : exp,
+      ),
     );
   };
 
@@ -152,7 +150,7 @@ export default function PersonalAside() {
         const details = Array.isArray(exp.details) ? [...exp.details] : [];
         details[index] = value;
         return { ...exp, details };
-      })
+      }),
     );
   };
 
@@ -209,7 +207,7 @@ export default function PersonalAside() {
     // Evita eliminar si solo queda una entrada
     if (educations.length > 1) {
       setEducations((prevEducations) =>
-        prevEducations.filter((edu) => edu.id !== id)
+        prevEducations.filter((edu) => edu.id !== id),
       );
     } else {
       alert("Debe haber al menos una entrada de educación.");
@@ -288,7 +286,7 @@ export default function PersonalAside() {
             />
           </div>
 
-          {templatePage && templatePage ==="classic" && (
+          {templatePage && templatePage === "classic" && (
             <div>
               <Label htmlFor="webLink">Sitio web / Linkedin</Label>
               <Input
@@ -299,12 +297,11 @@ export default function PersonalAside() {
                 onChange={DataHandleChange}
                 maxLength={90}
                 placeholder="www.web.com / Linkedi"
-
               ></Input>
             </div>
           )}
 
-          {templatePage && templatePage ===  "minimalist" && (
+          {templatePage && templatePage === "minimalist" && (
             <div>
               <Label htmlFor="profileImage">Imagen (Perfil)</Label>
               <Input
@@ -369,7 +366,7 @@ export default function PersonalAside() {
                 value={dataForm.location}
                 onChange={DataHandleChange}
                 placeholder="Ej: Madrid, España"
-                maxLength={29}
+                maxLength={60}
                 required
               />
             </div>
@@ -431,7 +428,7 @@ export default function PersonalAside() {
                         handleInputChange(
                           edu.id,
                           "institution",
-                          e.target.value
+                          e.target.value,
                         );
                         //DataHandleChange(e);
                       }}
@@ -497,42 +494,81 @@ export default function PersonalAside() {
 
         {/* --------------Sección de Idiomas ------------------*/}
 
-        {templatePage !== 'classic' &&(
+        {templatePage !== "classic" && (
           <section className="pt-4 border-t">
-          <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
-            Idioma
-          </h3>
+            <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
+              Idioma
+            </h3>
 
-          <div className="flex flex-col gap-5">
-            <div>
-              <Label htmlFor="primaryLanguage">Idioma Principal</Label>
-              <Input
-                id="primaryLanguage"
-                name="primaryLanguage"
-                type="text"
-                value={dataForm.primaryLanguage}
-                onChange={DataHandleChange}
-                placeholder="Español: Nativo"
-                required
-              />
+            <div className="flex flex-col gap-5">
+              <div>
+                <Label htmlFor="primaryLanguage">Idioma Principal</Label>
+                <Input
+                  id="primaryLanguage"
+                  name="primaryLanguage"
+                  type="text"
+                  value={dataForm.primaryLanguage}
+                  onChange={DataHandleChange}
+                  placeholder="Español: Nativo"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="secundaryLanguage">Idioma Secundario</Label>
+
+                <Input
+                  id="secundaryLanguage"
+                  name="secundaryLanguage"
+                  type="text"
+                  value={dataForm.secundaryLanguage}
+                  onChange={DataHandleChange}
+                  placeholder="Inglés: B1"
+                  required
+                />
+              </div>
             </div>
+          </section>
+        )}
 
-            <div>
-              <Label htmlFor="secundaryLanguage">Idioma Secundario</Label>
+        {/* ---------------Sección de Referencias ----------------*/}
+        {templatePage === "minimalist" && (
+          <section className="pt-4 border-t">
+            <h3 className="text-xl font-bold text-center text-teal-800 mb-3">
+              Referencias Personales
+            </h3>
 
-              <Input
-                id="secundaryLanguage"
-                name="secundaryLanguage"
-                type="text"
-                value={dataForm.secundaryLanguage}
-                onChange={DataHandleChange}
-                placeholder="Inglés: B1"
-                required
-              />
+            <div className="space-y-5">
+              <div>
+                <Label htmlFor="primaryReference">
+                  Primera Referencia Personal
+                </Label>
+                <Input
+                  id="primaryReference"
+                  name="primaryReference"
+                  placeholder="Christian Parisca: 04142961677"
+                  value={dataForm.primaryReference}
+                  onChange={DataHandleChange}
+                  type="text"
+                ></Input>
+              </div>
+
+              <div>
+                <Label htmlFor="secundaryReference">
+                  Segunda Referencia Personal
+                </Label>
+                <Input
+                  id="secundaryReference"
+                  name="secundaryReference"
+                  placeholder="Christian Parisca: 04142961677"
+                  value={dataForm.secundaryReference}
+                  onChange={DataHandleChange}
+                  type="text"
+                ></Input>
+              </div>
             </div>
-          </div>
-        </section>
-        ) }
+          </section>
+        )}
 
         {/* --------------Sección de Experiencia ------------------*/}
 
@@ -586,7 +622,7 @@ export default function PersonalAside() {
                         expHandleInputChange(
                           exp.id,
                           "position",
-                          e.target.value
+                          e.target.value,
                         );
                       }}
                       placeholder="Ej: Ingeniero en Sistemas"
@@ -621,7 +657,7 @@ export default function PersonalAside() {
                           expHandleInputChange(
                             exp.id,
                             "expFrom",
-                            e.target.value
+                            e.target.value,
                           );
                         }}
                         placeholder="MM/AAAA"
